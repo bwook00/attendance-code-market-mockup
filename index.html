@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>출석코드 마켓 · 에브리타임 UI 목업</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>출석코드 마켓 · 에브리타임</title>
 <style>
   :root{
     --red:#E01F26;
@@ -17,69 +17,56 @@
     --line-soft:#F3F3F3;
     --soft:#F7F7F7;
     --blue:#3B7DED;
-    --radius:8px;
     --font:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  html{height:100%;-webkit-text-size-adjust:100%}
   body{
-    margin:0;
-    background:#F2F2F3;
-    color:#1B1B1D;
-    overflow-x:hidden;
-    font-family:var(--font);
-    -webkit-font-smoothing:antialiased;
+    margin:0;min-height:100%;
+    background:#ECECEE;color:var(--ink);
+    font-family:var(--font);-webkit-font-smoothing:antialiased;
     word-break:keep-all;
   }
-  .page{max-width:1380px;margin:0 auto;padding:58px 28px 104px}
-  .masthead{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:34px}
-  .kicker{margin:0 0 12px;font-size:10.5px;font-weight:800;letter-spacing:.18em;color:#737373}
-  h1{margin:0 0 12px;font-size:34px;line-height:1.15;letter-spacing:-1.4px;font-weight:800}
-  .lede{margin:0;max-width:590px;font-size:14px;line-height:1.75;color:#5E5E62}
-  .spec{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding-bottom:4px}
-  .swatch{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 11px;background:#fff;border:1px solid #E3E3E5;border-radius:8px;font-size:10.5px;font-weight:600;color:#555;letter-spacing:.02em}
-  .swatch i{width:14px;height:14px;border-radius:4px;display:block;border:1px solid rgba(0,0,0,.06)}
-  .rule{height:1px;background:#DEDEE1;margin:0 0 40px}
+  button,input{font:inherit;color:inherit}
+  button{background:none;border:0;padding:0;cursor:pointer}
+  input{outline:none}
+  [hidden]{display:none!important}
+  :focus-visible{outline:2px solid #111;outline-offset:2px}
 
-  .frames{display:flex;flex-wrap:wrap;justify-content:center;gap:66px 40px}
-  .screen-fig{margin:0;width:408px;flex:none}
-  .screen-fig figcaption{display:flex;gap:12px;align-items:flex-start;margin:0 0 18px;padding:0 2px;min-height:44px}
-  .num{font-size:11px;font-weight:800;color:var(--red-dark);letter-spacing:.08em;line-height:1.5;padding-top:1px}
-  .cap-title{font-size:14px;font-weight:700;letter-spacing:-.2px;line-height:1.4}
-  .cap-desc{font-size:11.5px;color:#6C6C70;line-height:1.5;margin-top:2px}
-
-  .phone{
-    width:408px;height:862px;padding:9px;background:#111113;border-radius:56px;
-    box-shadow:0 26px 60px rgba(0,0,0,.16),0 4px 12px rgba(0,0,0,.08);
-    flex:none;
+  .stage{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:10px}
+  .app{
+    position:relative;width:min(430px,100%);height:min(860px,calc(100dvh - 96px));
+    background:#fff;border:1px solid #E2E2E4;border-radius:28px;
+    box-shadow:0 24px 70px rgba(0,0,0,.16),0 4px 16px rgba(0,0,0,.06);
+    overflow:hidden;display:flex;flex-direction:column;
   }
-  .screen{
-    position:relative;width:390px;height:844px;overflow:hidden;display:flex;flex-direction:column;
-    background:#fff;border-radius:47px;color:var(--ink);font-size:14px;
-  }
-  .statusbar{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 25px 0 27px;font-size:13px;font-weight:600;letter-spacing:.01em}
-  .sysicons{display:flex;align-items:center;gap:5px;color:#111}
-  .home-bar{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#111;z-index:60;opacity:.9}
+  .stage-note{margin:0;font-size:10.5px;color:#6F6F73;letter-spacing:-.1px;text-align:center}
 
+  .view{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff}
+  .view-scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+  .view-scroll::-webkit-scrollbar{display:none}
+  .tabview .view-scroll{padding-bottom:84px}
+
+  .app-head{height:55px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 16px}
+  .wordmark{color:var(--red);font-size:21px;font-weight:800;letter-spacing:-1.1px;line-height:1}
+  .head-actions{display:flex;align-items:center;gap:2px}
+  .iconbtn{width:44px;height:44px;display:grid;place-items:center;color:#222;border-radius:50%;position:relative}
+  .iconbtn:active{background:#F5F5F5}
+  .iconbtn .dot{position:absolute;top:11px;right:11px;width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 0 1.5px #fff}
   .ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;display:block}
   .ic.sm{width:16px;height:16px}
   .ic.xs{width:12px;height:12px}
   .ic.fill{fill:currentColor;stroke:none}
-  .iconbtn{width:34px;height:34px;display:grid;place-items:center;color:#222;position:relative}
-  .iconbtn .dot{position:absolute;top:7px;right:7px;width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 0 1.5px #fff}
-  .app-head{height:52px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px}
-  .app-head.bordered{border-bottom:1px solid var(--line)}
-  .wordmark{color:var(--red);font-size:21px;font-weight:800;letter-spacing:-1.1px;line-height:1}
-  .head-actions{display:flex;align-items:center;gap:2px}
 
-  .nav{height:48px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
-  .nav-title{font-size:16px;font-weight:700;letter-spacing:-.3px}
-  .nav-side{display:flex;align-items:center;gap:0;width:76px}
-  .nav-side.right{justify-content:flex-end}
+  .search-wrap{flex:none;display:flex;gap:8px;align-items:center;padding:0 16px 10px}
+  .search-wrap input{flex:1;height:40px;border:1px solid #E4E4E6;border-radius:8px;padding:0 11px;font-size:13px;background:#FAFAFA}
+  .search-wrap input:focus{border-color:#C9C9CC;background:#fff}
+  .search-close{font-size:11px;color:var(--sub);font-weight:600;padding:10px 2px}
+  .search-empty{padding:28px 16px;font-size:12px;color:var(--sub);text-align:center}
 
-  .schoolbar{flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 16px 11px;border-bottom:1px solid var(--line);font-size:11.5px;color:#555}
+  .schoolbar{display:flex;align-items:center;justify-content:space-between;padding:0 16px 11px;border-bottom:1px solid var(--line);font-size:11.5px;color:#555}
   .schoolbar .school{display:flex;align-items:center;gap:4px;font-weight:600}
-  .schoolbar .ic{color:#767676}
+  .schoolbar .ic{color:var(--faint)}
   .schoolbar .term{color:var(--sub)}
 
   .att-card{margin:13px 16px 8px;background:var(--soft);border-radius:12px;padding:13px 15px 12px}
@@ -91,7 +78,7 @@
   .att-main .warn{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--red-ink);background:#fff;border-radius:6px;padding:4px 7px}
   .att-main .warn i{width:4px;height:4px;border-radius:50%;background:var(--red)}
   .progress{height:4px;border-radius:99px;background:#E4E4E6;overflow:hidden;margin-top:9px}
-  .progress span{display:block;height:100%;background:var(--red);border-radius:99px}
+  .progress span{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .3s ease}
   .att-foot{display:flex;justify-content:space-between;font-size:10.5px;color:var(--sub);margin-top:7px}
 
   .sec-head{height:41px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
@@ -99,42 +86,49 @@
   .live{display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:800;letter-spacing:.1em;color:var(--red)}
   .live i{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 2.2s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-  .more{font-size:10.5px;color:var(--sub);font-weight:500}
+  .text-link{font-size:10.5px;color:var(--sub);font-weight:500;padding:8px 0}
 
-  .mkt-row{display:flex;align-items:flex-start;gap:10px;padding:12px 16px 13px;border-top:1px solid var(--line-soft)}
+  .mkt-row{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;padding:12px 16px 13px;border-top:1px solid var(--line-soft);background:#fff}
   .mkt-row.first{border-top:1px solid var(--line)}
+  .mkt-row:active{background:#FAFAFA}
   .mkt-main{flex:1;min-width:0}
   .mkt-line{display:flex;align-items:center;gap:6px}
   .pill-class{flex:none;font-size:9.5px;font-weight:800;color:var(--red-ink);background:var(--red-soft);border-radius:4px;padding:2px 5px;letter-spacing:-.1px}
   .mkt-title{font-size:13px;font-weight:600;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mkt-meta{margin-top:4px;font-size:10.5px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mkt-meta .star{color:#767676;margin:0 1px}
+  .mkt-meta{display:block;margin-top:4px;font-size:10.5px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .mkt-side{flex:none;text-align:right;padding-top:1px}
-  .mkt-price{font-size:14.5px;font-weight:800;letter-spacing:-.4px;white-space:nowrap}
+  .mkt-price{font-size:14.5px;font-weight:800;letter-spacing:-.4px;white-space:nowrap;font-variant-numeric:tabular-nums}
   .mkt-price small{font-size:9.5px;font-weight:600;margin-left:1px;letter-spacing:0}
   .mkt-time{display:block;margin-top:4px;font-size:9.5px;font-weight:700;color:var(--red)}
   .mkt-time.done{color:#767676;font-weight:600}
 
-  .rank-row{display:flex;align-items:center;gap:11px;padding:9px 16px;border-top:1px solid var(--line-soft)}
+  .rank-row{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:9px 16px;border-top:1px solid var(--line-soft);background:#fff}
+  .rank-row:active{background:#FAFAFA}
   .rank{width:14px;font-size:11px;font-weight:800;color:var(--red);text-align:center}
-  .rank-name{font-size:12.5px;font-weight:650}
-  .rank-sub{font-size:10.5px;color:var(--sub);margin-top:2px}
-  .rank-price{margin-left:auto;font-size:11.5px;font-weight:700;color:#444}
+  .rank-name{display:block;font-size:12.5px;font-weight:700}
+  .rank-sub{display:block;font-size:10.5px;color:var(--sub);margin-top:2px}
+  .rank-price{margin-left:auto;font-size:11.5px;font-weight:700;color:#444;white-space:nowrap}
   .rank-price span{font-weight:500;color:var(--faint);font-size:10px}
 
-  .safe-strip{display:flex;align-items:center;justify-content:center;gap:5px;margin:10px 16px 0;padding:8px 0;border-top:1px solid var(--line-soft);font-size:10px;color:#777}
-  .safe-strip .ic{color:#767676}
+  .safe-strip{display:flex;align-items:center;justify-content:center;gap:5px;margin:10px 16px 0;padding:8px 0;border-top:1px solid var(--line-soft);font-size:10px;color:#6F6F6F}
+  .safe-strip .ic{color:var(--faint)}
 
-  .fab{position:absolute;right:16px;bottom:93px;width:52px;height:52px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;box-shadow:0 4px 14px rgba(224,31,38,.35);z-index:20}
+  .fab{position:absolute;right:16px;bottom:calc(82px + env(safe-area-inset-bottom));width:52px;height:52px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;box-shadow:0 4px 14px rgba(224,31,38,.35);z-index:15}
+  .fab:active{transform:scale(.96)}
   .fab .ic{width:23px;height:23px;stroke-width:1.9}
 
-  .tabbar{flex:none;height:78px;display:flex;padding:7px 4px 19px;border-top:1px solid var(--line);background:#fff;margin-top:auto}
-  .tabitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#737373;font-size:9.5px;font-weight:600}
+  .tabbar{position:absolute;left:0;right:0;bottom:0;height:calc(68px + env(safe-area-inset-bottom));display:flex;padding:5px 4px calc(5px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff;z-index:20}
+  .tabitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#737373;font-size:9.5px;font-weight:600;border-radius:8px}
   .tabitem .ic{width:23px;height:23px;stroke-width:1.55}
   .tabitem.active{color:var(--red);font-weight:800}
 
-  /* class detail */
-  .class-hero{padding:2px 16px 13px}
+  .nav{height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 4px;border-bottom:1px solid var(--line)}
+  .nav-title{font-size:16px;font-weight:700;letter-spacing:-.3px}
+  .nav-side{display:flex;align-items:center;width:88px}
+  .nav-side.right{justify-content:flex-end}
+
+  .class-scroll{padding-bottom:112px}
+  .class-hero{padding:3px 16px 13px}
   .chip-outline{display:inline-flex;align-items:center;height:20px;padding:0 7px;border:1px solid #E3E3E3;border-radius:5px;font-size:9.5px;font-weight:600;color:#666}
   .class-hero h2{margin:8px 0 5px;font-size:22px;font-weight:800;letter-spacing:-.9px;line-height:1.2}
   .class-meta{margin:0;font-size:11px;color:var(--sub)}
@@ -143,7 +137,7 @@
   .class-rating .sep{color:#D2D2D2}
 
   .today-card{margin:0 16px 12px;background:var(--soft);border-radius:10px;padding:11px 13px 10px}
-  .today-top{display:flex;align-items:center;justify-content:space-between}
+  .today-top{display:flex;align-items:center;justify-content:space-between;min-height:16px}
   .live-chip{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:800;color:var(--red-dark)}
   .live-chip i{width:5px;height:5px;border-radius:50%;background:var(--red)}
   .timer{font-size:12px;font-weight:800;color:var(--red-dark);font-variant-numeric:tabular-nums;letter-spacing:.02em}
@@ -163,47 +157,73 @@
   .price-card{display:flex;align-items:center;gap:10px;margin:11px 16px 4px;padding:10px 12px;border:1px solid #EFEFEF;border-radius:10px}
   .price-left{flex:1;min-width:0}
   .price-label{font-size:9.5px;color:var(--sub);font-weight:600}
-  .price-left strong{display:block;margin-top:1px;font-size:16px;font-weight:800;letter-spacing:-.5px}
+  .price-left strong{display:block;margin-top:1px;font-size:16px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
   .price-left strong span{font-size:10px;font-weight:600;margin-left:1px}
-  .price-sub{display:block;margin-top:2px;font-size:9.5px;color:var(--faint)}
+  .price-sub{display:block;margin-top:2px;font-size:9.5px;color:#767676}
   .spark{flex:none;display:flex;align-items:flex-end;gap:3px;height:30px;width:78px}
   .spark i{flex:1;background:#EDEDED;border-radius:1px}
   .spark i.on{background:var(--red)}
 
-  .seller-row{display:flex;align-items:center;gap:9px;padding:10px 16px;border-top:1px solid var(--line-soft)}
+  .seller-row{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:10px 16px;border-top:1px solid var(--line-soft);background:#fff}
+  .seller-row.selected{background:#FAFAFA}
+  .seller-row:active{background:#F6F6F6}
   .seller-av{flex:none;width:32px;height:32px;border-radius:50%;background:#F1F1F2;color:#737373;font-size:10px;font-weight:700;display:grid;place-items:center}
-  .seller-main{flex:1;min-width:0}
+  .seller-row.selected .seller-av{background:var(--red-soft);color:var(--red-ink)}
+  .seller-main{flex:1;min-width:0;display:block}
   .seller-title{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .mini-badge{flex:none;font-size:8.5px;font-weight:800;color:var(--red-ink);background:var(--red-soft);border-radius:3px;padding:2px 4px}
-  .seller-meta{margin-top:3px;font-size:10px;color:var(--sub)}
+  .seller-meta{display:block;margin-top:3px;font-size:10px;color:var(--sub)}
   .seller-side{flex:none;text-align:right}
-  .seller-side strong{font-size:14px;font-weight:800;letter-spacing:-.4px}
+  .seller-side strong{font-size:14px;font-weight:800;letter-spacing:-.4px;font-variant-numeric:tabular-nums}
   .seller-side strong small{font-size:9.5px;font-weight:600;margin-left:1px}
   .seller-side span{display:block;margin-top:3px;font-size:9.5px;font-weight:700;color:var(--red)}
 
-  .cta-dock{flex:none;margin-top:auto;padding:9px 16px 34px;border-top:1px solid var(--line);background:#fff}
-  .escrow-line{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:7px;font-size:9.5px;color:var(--sub)}
-  .escrow-line .ic{color:#767676}
-  .btn-primary{height:47px;border-radius:7px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:800;letter-spacing:-.3px}
-  .btn-primary .ic{width:18px;height:18px;margin-right:5px;stroke-width:2}
+  .class-info{margin:14px 16px 0;background:var(--soft);border-radius:10px;padding:12px 13px}
+  .class-info-title{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;color:#444}
+  .class-info-title .ic{width:14px;height:14px;color:#737373}
+  .class-info p{margin:5px 0 0;font-size:10px;line-height:1.6;color:#666}
+  .panel-empty{padding:45px 24px;text-align:center;font-size:12px;color:#555;font-weight:600}
+  .panel-empty span{display:block;margin-top:5px;font-size:10.5px;color:var(--sub);font-weight:400}
+  .history-card{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 16px;padding:14px;border:1px solid #EFEFEF;border-radius:10px}
+  .history-card div{display:flex;flex-direction:column;gap:3px}
+  .history-label{font-size:9.5px;color:var(--sub)}
+  .history-card strong{font-size:12.5px;font-weight:700}
+  .history-card div span:last-child{font-size:10px;color:var(--sub)}
+  .history-badge{font-size:9.5px;font-weight:800;color:var(--red-ink);background:var(--red-soft);border-radius:5px;padding:4px 7px}
+  .review{padding:14px 16px;border-top:1px solid var(--line-soft)}
+  .review:first-child{border-top:0}
+  .review-top{display:flex;align-items:center;gap:7px}
+  .review-top strong{font-size:11.5px;font-weight:700}
+  .review-star{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--red-dark)}
+  .review p{margin:8px 0 5px;font-size:11.5px;line-height:1.6;color:#333}
+  .review-meta{font-size:9.5px;color:#767676}
 
-  /* payment sheet */
-  .dim-screen{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;filter:blur(.3px)}
-  .scrim{position:absolute;inset:0;background:rgba(17,17,19,.48);z-index:40}
-  .sheet{position:absolute;left:0;right:0;bottom:0;z-index:50;background:#fff;border-radius:22px 22px 0 0;padding:8px 18px 30px;box-shadow:0 -8px 30px rgba(0,0,0,.18)}
+  .cta-dock{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:9px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
+  .escrow-line{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:7px;font-size:9.5px;color:var(--sub)}
+  .escrow-line .ic{color:var(--faint)}
+  .btn-primary{width:100%;height:48px;border-radius:7px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:800;letter-spacing:-.3px}
+  .btn-primary .ic{width:18px;height:18px;margin-right:5px;stroke-width:2}
+  .btn-primary:active{background:var(--red-dark)}
+  .btn-primary.done{background:#F2F2F3;color:#555}
+
+  .sheet-wrap{position:absolute;inset:0;z-index:100;display:flex;flex-direction:column;justify-content:flex-end}
+  .scrim{position:absolute;inset:0;background:rgba(17,17,19,.48);animation:fadeIn .18s ease-out}
+  .sheet{position:relative;background:#fff;border-radius:22px 22px 0 0;padding:8px 18px calc(22px + env(safe-area-inset-bottom));max-height:92%;overflow-y:auto;animation:sheetIn .24s ease-out}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes sheetIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
   .grabber{width:36px;height:4px;border-radius:99px;background:#DCDCDE;margin:0 auto 12px}
-  .sheet-head{display:flex;align-items:center;justify-content:space-between;height:30px}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;height:32px}
   .sheet-head h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.5px}
-  .sheet-head .iconbtn{width:30px;height:30px}
+  .sheet-head .iconbtn{width:36px;height:36px;margin-right:-8px}
   .buy-item{display:flex;align-items:center;gap:10px;margin-top:13px;padding-bottom:14px;border-bottom:1px solid var(--line)}
   .buy-thumb{flex:none;width:38px;height:38px;border-radius:9px;background:var(--red-soft);color:var(--red-ink);font-size:14px;font-weight:800;display:grid;place-items:center}
   .buy-main{flex:1;min-width:0}
   .buy-main strong{display:block;font-size:13px;font-weight:700;letter-spacing:-.2px}
   .buy-main span{display:block;margin-top:3px;font-size:10px;color:var(--sub)}
-  .buy-price{flex:none;font-size:17px;font-weight:800;letter-spacing:-.6px}
+  .buy-price{flex:none;font-size:17px;font-weight:800;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
   .buy-price small{font-size:10px;font-weight:600;margin-left:1px}
   .sheet-label{margin:14px 0 8px;font-size:10px;font-weight:700;color:var(--sub)}
-  .pay-row{display:flex;align-items:center;gap:9px;height:50px;border:1px solid #ECECEC;border-radius:8px;padding:0 11px;margin-bottom:7px}
+  .pay-row{display:flex;align-items:center;gap:9px;width:100%;text-align:left;height:50px;border:1px solid #ECECEC;border-radius:8px;padding:0 11px;margin-bottom:7px;background:#fff}
   .pay-row.selected{border-color:#E9C9CB;background:#FFFCFC}
   .radio{flex:none;width:16px;height:16px;border-radius:50%;border:1.5px solid #D4D4D6;position:relative}
   .pay-row.selected .radio{border-color:var(--red)}
@@ -213,21 +233,23 @@
   .pay-main{flex:1;min-width:0}
   .pay-main strong{display:block;font-size:11.5px;font-weight:700}
   .pay-main span{display:block;margin-top:2px;font-size:9.5px;color:var(--sub)}
-  .pay-check{color:var(--red);display:grid;place-items:center}
+  .pay-check{color:var(--red);display:grid;place-items:center;visibility:hidden}
+  .pay-row.selected .pay-check{visibility:visible}
   .pay-check .ic{width:16px;height:16px;stroke-width:2.4}
   .bill{margin:12px 0 10px;padding-top:2px;border-top:1px solid var(--line)}
   .bill-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:10.5px;color:#555}
-  .bill-row b{font-weight:600;color:#333}
+  .bill-row b{font-weight:600;color:#333;font-variant-numeric:tabular-nums}
   .bill-row.total{margin-top:5px;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px;color:#111;font-weight:700}
   .bill-row.total b{font-size:16px;font-weight:800;letter-spacing:-.5px;color:#111}
-  .escrow-box{display:flex;gap:8px;align-items:flex-start;background:var(--soft);border-radius:8px;padding:10px 11px;margin-bottom:12px}
-  .escrow-box .ic{flex:none;width:16px;height:16px;color:#6F6F6F;margin-top:1px}
+  .escrow-box{display:flex;gap:8px;align-items:flex-start;background:var(--soft);border-radius:8px;padding:10px 11px;margin-bottom:10px}
+  .escrow-box .ic{flex:none;width:16px;height:16px;color:#666;margin-top:1px}
   .escrow-box p{margin:0;font-size:9.5px;line-height:1.55;color:#666}
   .escrow-box p strong{display:block;font-size:10.5px;color:#333;margin-bottom:1px}
+  .pay-error{margin:0 0 8px;font-size:10px;color:var(--red-dark);font-weight:600}
   .terms{margin:9px 0 0;text-align:center;font-size:9px;color:#767676;line-height:1.4}
 
-  /* success */
-  .done-body{flex:1;display:flex;flex-direction:column;padding:16px 20px 0;overflow:hidden}
+  .success-scroll{padding-bottom:112px}
+  .done-body{display:flex;flex-direction:column;padding:16px 20px 0}
   .done-icon{width:62px;height:62px;border-radius:50%;background:var(--red-soft);color:var(--red);display:grid;place-items:center;margin:10px auto 0}
   .done-icon .ic{width:30px;height:30px;stroke-width:2.4}
   .done-body h2{margin:13px 0 5px;text-align:center;font-size:20px;font-weight:800;letter-spacing:-.7px}
@@ -235,10 +257,11 @@
   .seller-line{margin-top:7px;text-align:center;font-size:9.5px;color:#737373}
   .code-card{margin-top:20px;border:1px dashed #DCDCDE;background:#FFF9F9;border-radius:12px;padding:14px 14px 13px}
   .code-label{display:flex;align-items:center;justify-content:space-between;font-size:9.5px;font-weight:700;color:#8A6A6B}
-  .valid-chip{display:inline-flex;align-items:center;gap:3px;font-size:8.5px;font-weight:700;color:var(--red);background:#fff;border-radius:4px;padding:2px 5px}
+  .valid-chip{display:inline-flex;align-items:center;gap:3px;font-size:8.5px;font-weight:700;color:var(--red-dark);background:#fff;border-radius:4px;padding:2px 5px}
   .digits{display:flex;justify-content:center;gap:6px;margin-top:10px}
   .digits span{width:41px;height:48px;border-radius:7px;background:#fff;border:1px solid #F0DADB;display:grid;place-items:center;font-size:20px;font-weight:800;letter-spacing:.02em;color:#1B1B1D;font-variant-numeric:tabular-nums}
-  .copy-btn{display:flex;align-items:center;justify-content:center;gap:5px;height:37px;margin-top:11px;border:1px solid #EFD3D5;border-radius:6px;background:#fff;color:var(--red-ink);font-size:11px;font-weight:700}
+  .copy-btn{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;height:37px;margin-top:11px;border:1px solid #EFD3D5;border-radius:6px;background:#fff;color:var(--red-ink);font-size:11px;font-weight:700}
+  .copy-btn:active{background:#FFF5F5}
   .copy-btn .ic{width:15px;height:15px}
   .valid-line{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:9px;font-size:9.5px;color:#8A6A6B}
   .valid-line b{color:var(--red-dark);font-weight:700;font-variant-numeric:tabular-nums}
@@ -247,103 +270,114 @@
   .step b{color:#111;font-weight:700}
   .step-num{flex:none;width:19px;height:19px;border-radius:50%;background:#F2F2F3;color:#6F6F6F;font-size:9px;font-weight:800;display:grid;place-items:center}
   .step .ic{margin-left:auto;color:#B5B5B5;width:14px;height:14px}
-  .done-dock{margin-top:auto;padding:10px 20px 34px;border-top:1px solid var(--line)}
-  .link-btn{display:block;text-align:center;margin-top:11px;font-size:11px;font-weight:600;color:var(--sub)}
+  .done-dock{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:10px 20px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
+  .link-btn{display:block;width:100%;text-align:center;margin-top:11px;font-size:11px;font-weight:600;color:var(--sub)}
   .safe-note{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:10px;font-size:9px;color:#737373}
 
-  /* sell form */
-  .sell-head{height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 10px;border-bottom:1px solid var(--line)}
+  .verified-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 28px calc(30px + env(safe-area-inset-bottom))}
+  .verified-body .done-icon{margin:0 auto 18px}
+  .verified-body h2{margin:0 0 6px;font-size:22px;font-weight:800;letter-spacing:-.9px}
+  .verified-class{font-size:12px;font-weight:700;color:var(--red-ink);background:var(--red-soft);border-radius:5px;padding:4px 8px}
+  .verified-text{margin:14px 0 0;text-align:center;font-size:12px;line-height:1.7;color:#555}
+  .verified-count{margin:16px 0 24px;font-size:30px;font-weight:800;letter-spacing:-1.4px;font-variant-numeric:tabular-nums}
+  .verified-count span{font-size:13px;font-weight:600;color:var(--sub);margin-left:3px;letter-spacing:0}
+  .verified-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:280px}
+  .btn-secondary{width:100%;height:44px;border-radius:7px;border:1px solid #E4E4E6;background:#fff;font-size:13px;font-weight:700;color:#333}
+  .btn-secondary:active{background:#FAFAFA}
+
+  .sell-head{position:relative;height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 4px;border-bottom:1px solid var(--line)}
   .sell-head .nav-title{position:absolute;left:50%;transform:translateX(-50%)}
-  .sell-head{position:relative}
-  .save{font-size:11px;font-weight:700;color:var(--sub);padding:8px}
-  .form{flex:1;overflow:hidden;padding:13px 16px 0}
-  .field{margin-bottom:13px}
+  .sell-scroll{padding-bottom:108px}
+  .form{padding:13px 16px 0}
+  .field{margin-bottom:14px}
   .field-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
   .field-label{font-size:11px;font-weight:800;letter-spacing:-.2px}
-  .field-hint{font-size:9px;color:var(--faint)}
-  .class-select{display:flex;align-items:center;gap:9px;border:1px solid #E6E6E8;border-radius:8px;padding:10px 11px}
-  .class-select .buy-thumb{width:32px;height:32px;font-size:12px;border-radius:8px}
-  .cs-main{flex:1;min-width:0}
-  .cs-main strong{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700}
-  .cs-main span{display:block;margin-top:2px;font-size:9.5px;color:var(--sub)}
-  .cs-main .mini-badge{font-size:8px}
-  .class-select > .ic{color:#767676;width:16px;height:16px}
+  .field-hint{font-size:9px;color:#767676}
+  .class-options{display:flex;gap:6px}
+  .class-option{flex:1;height:38px;border-radius:7px;border:1px solid #E9E9EB;background:#fff;font-size:11px;font-weight:600;color:#555;padding:0 4px}
+  .class-option.on{border-color:#E7BFC1;background:var(--red-soft);color:var(--red-ink);font-weight:800}
+  .sell-class-meta{margin-top:6px;font-size:9.5px;color:var(--sub);display:flex;align-items:center;gap:5px}
+  .sell-class-meta .mini-badge{font-size:8px}
   .code-boxes{display:flex;gap:6px}
-  .code-boxes span{flex:1;height:49px;border-radius:7px;border:1px solid #E6E6E8;background:#FAFAFA;display:grid;place-items:center;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:#1B1B1D}
+  .code-boxes input{flex:1;min-width:0;height:49px;border-radius:7px;border:1px solid #E6E6E8;background:#FAFAFA;display:block;text-align:center;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:#1B1B1D;padding:0}
+  .code-boxes input:focus{border-color:#BDBDC1;background:#fff}
+  .code-boxes.invalid input{border-color:#E9B4B7;background:#FFF9F9}
+  .field-error{margin:6px 0 0;font-size:9.5px;color:var(--red-dark);font-weight:600}
   .helper{display:flex;align-items:center;gap:4px;margin-top:6px;font-size:9px;color:var(--sub)}
-  .helper .ic{width:12px;height:12px;color:#767676}
+  .helper .ic{width:12px;height:12px;color:var(--faint)}
   .helper .right{margin-left:auto;color:#737373}
-  .price-input{display:flex;align-items:center;justify-content:space-between;height:48px;border:1px solid #E6E6E8;border-radius:8px;padding:0 12px;background:#fff}
-  .price-input .won{font-size:13px;font-weight:600;color:#888}
-  .price-input strong{font-size:21px;font-weight:800;letter-spacing:-.7px;font-variant-numeric:tabular-nums}
-  .price-input .unit{font-size:11px;color:#6F6F6F;font-weight:600;margin-left:2px}
+  .price-input{display:flex;align-items:center;gap:8px;height:48px;border:1px solid #E6E6E8;border-radius:8px;padding:0 12px;background:#fff}
+  .price-input .won{font-size:13px;font-weight:600;color:#555}
+  .price-input input{flex:1;min-width:0;border:0;background:none;text-align:right;font-size:21px;font-weight:800;letter-spacing:-.7px;font-variant-numeric:tabular-nums;padding:0}
+  .price-input .unit{font-size:11px;color:#555;font-weight:600;margin-left:2px}
   .chips{display:flex;gap:6px;margin-top:7px}
-  .chip{flex:1;height:31px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid #E9E9EB;background:#fff;font-size:10.5px;font-weight:600;color:#666}
+  .chip{flex:1;height:31px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid #E9E9EB;background:#fff;font-size:10.5px;font-weight:600;color:#666;padding:0 4px;white-space:nowrap}
   .chip.on{border-color:#E7BFC1;background:var(--red-soft);color:var(--red-ink);font-weight:800}
   .chips.deadline .chip{height:32px}
   .notice{display:flex;gap:7px;align-items:flex-start;background:var(--soft);border-radius:8px;padding:9px 10px;margin-top:7px}
-  .notice .ic{flex:none;width:14px;height:14px;color:#6F6F6F;margin-top:1px}
-  .notice p{margin:0;font-size:9px;line-height:1.55;color:#6B6B6B}
+  .notice .ic{flex:none;width:14px;height:14px;color:#666;margin-top:1px}
+  .notice p{margin:0;font-size:9px;line-height:1.55;color:#666}
   .payout{margin-top:12px;border:1px solid #EFEFEF;border-radius:9px;padding:10px 11px}
   .payout-row{display:flex;justify-content:space-between;align-items:baseline;font-size:10.5px;color:#666}
-  .payout-row strong{font-size:15px;font-weight:800;color:#111;letter-spacing:-.4px}
+  .payout-row strong{font-size:15px;font-weight:800;color:#111;letter-spacing:-.4px;font-variant-numeric:tabular-nums}
   .payout p{margin:3px 0 0;font-size:9px;color:var(--sub)}
-  .sell-dock{flex:none;padding:9px 16px 32px;border-top:1px solid var(--line);margin-top:auto}
+  .sell-dock{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:9px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
 
-  /* timetable */
-  .tt-head{height:58px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px}
+  .tt-head{height:58px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 16px}
   .tt-title-wrap{display:flex;align-items:baseline;gap:8px}
   .tt-title{margin:0;font-size:21px;font-weight:800;letter-spacing:-.8px}
   .semester{display:inline-flex;align-items:center;gap:2px;font-size:10.5px;color:var(--sub);font-weight:500}
   .semester .ic{width:13px;height:13px}
-  .tt-wrap{flex:none;padding:0 12px}
+  .tt-wrap{padding:0 12px}
   .tt-days{display:grid;grid-template-columns:32px repeat(5,1fr);align-items:end;height:27px;border-bottom:1px solid var(--line);padding-bottom:6px;font-size:9.5px;color:#737373;text-align:center;font-weight:600}
   .tt-days .today{color:var(--red);font-weight:800}
-  .tt-body{position:relative;height:510px;margin-left:32px;display:grid;grid-template-columns:repeat(5,1fr);background:repeating-linear-gradient(to bottom,#F6F6F6 0 1px,transparent 1px 16.6667%)}
+  .tt-body{position:relative;height:520px;margin-left:32px;display:grid;grid-template-columns:repeat(5,1fr);background:repeating-linear-gradient(to bottom,#F6F6F6 0 1px,transparent 1px 16.6667%)}
   .tt-times{position:absolute;left:-32px;top:0;bottom:0;width:32px;display:flex;flex-direction:column}
   .tt-time{flex:1;font-size:8px;color:#767676;text-align:right;padding:2px 5px 0 0;font-variant-numeric:tabular-nums;border-top:1px solid #F6F6F6}
   .tt-time:first-child{border-top:0}
   .tt-col{position:relative;border-left:1px solid #F3F3F3}
   .tt-col:first-of-type{border-left:0}
-  .tt-block{position:absolute;left:3px;right:3px;border-radius:6px;padding:5px 5px 4px;overflow:hidden}
+  .tt-block{position:absolute;left:3px;right:3px;border-radius:6px;padding:5px 5px 4px;overflow:hidden;text-align:left}
   .tt-block strong{display:block;font-size:9.5px;font-weight:800;letter-spacing:-.2px;line-height:1.25}
-  .tt-block span{display:block;margin-top:2px;font-size:7.5px;font-weight:500;opacity:.8;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tt-block span{display:block;margin-top:2px;font-size:7.5px;font-weight:500;opacity:.85;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .b-red{background:#FFEAEA;color:#A8141A}
   .b-blue{background:#E9F1FF;color:#2F5C9E}
   .b-green{background:#E8F6EC;color:#2D6B42}
   .b-purple{background:#F1EAFF;color:#5C4193}
-  .tt-block.now{background:#FFDCDC;box-shadow:inset 0 0 0 1px #F3BFC2}
+  .tt-block.now{background:#FFDCDC}
   .nowline{position:absolute;left:0;right:0;top:36%;border-top:1.5px solid var(--red);z-index:5;pointer-events:none}
   .nowline .dot{position:absolute;left:50%;top:-3.5px;width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px #fff}
-  .tt-summary{flex:none;margin:12px 16px 0;display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #EFEFEF;border-radius:9px}
+  .tt-summary{margin:12px 16px 0;display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #EFEFEF;border-radius:9px}
   .tt-sum-left{flex:1;min-width:0}
-  .tt-sum-left .eyebrow-red{display:block;font-size:8.5px;font-weight:800;color:var(--red);letter-spacing:.04em}
+  .eyebrow-red{display:block;font-size:8.5px;font-weight:800;color:var(--red);letter-spacing:.04em}
   .tt-sum-left strong{display:block;margin-top:2px;font-size:11.5px;font-weight:700}
   .tt-sum-left span{display:block;margin-top:2px;font-size:9px;color:var(--sub)}
   .btn-mini{flex:none;height:32px;padding:0 10px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;font-size:10px;font-weight:800;letter-spacing:-.2px}
+  .btn-mini:active{background:var(--red-dark)}
 
-  /* notes */
-  .notes{max-width:1000px;margin:90px auto 0;padding:0 4px}
-  .notes h2{font-size:15px;font-weight:800;letter-spacing:-.4px;margin:0 0 4px}
-  .notes .sub{font-size:11.5px;color:#6F6F6F;margin:0 0 18px}
-  .note-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 36px;border-top:1px solid #DDDDE0}
-  .note{padding:15px 0 14px;border-bottom:1px solid #E2E2E5}
-  .note strong{display:block;font-size:11.5px;font-weight:800;margin-bottom:4px;letter-spacing:-.2px}
-  .note p{margin:0;font-size:11px;line-height:1.65;color:#666}
-  .note p code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:#A8141A;background:#FFF1F1;padding:1px 4px;border-radius:3px}
-  .disclaimer{margin:26px 0 0;font-size:10.5px;color:#6F6F73;text-align:center}
+  .board-head{height:64px;padding:0 12px 0 16px;border-bottom:1px solid var(--line)}
+  .board-head h1{margin:0;font-size:19px;font-weight:800;letter-spacing:-.7px}
+  .board-head p{margin:2px 0 0;font-size:10px;color:var(--sub)}
+  .board-write{font-size:11px;font-weight:800;color:var(--red-ink);background:var(--red-soft);border-radius:6px;padding:7px 9px}
+  .board-intro{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:10.5px;color:var(--sub)}
+  .board-intro b{color:#333;font-weight:700}
 
-  @media (max-width:480px){
-    .page{padding:34px 12px 70px}
-    h1{font-size:27px}
-    .lede{font-size:13px}
-    .screen-fig{width:100%}
-    .phone{transform:scale(.86);transform-origin:top center;margin-bottom:-120px}
-    .frames{gap:44px 0}
-    .notes{margin-top:60px}
+  .empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 30px 100px;text-align:center}
+  .empty-icon{width:60px;height:60px;border-radius:50%;background:var(--soft);color:#737373;display:grid;place-items:center;margin-bottom:15px}
+  .empty-icon .ic{width:26px;height:26px}
+  .empty-state h2{margin:0 0 6px;font-size:15px;font-weight:800;letter-spacing:-.4px}
+  .empty-state p{margin:0 0 18px;font-size:11.5px;line-height:1.65;color:var(--sub);max-width:250px}
+
+  .toast{position:absolute;left:16px;right:16px;top:calc(64px + env(safe-area-inset-top));z-index:300;background:#222;color:#fff;border-radius:9px;padding:11px 13px;font-size:11.5px;line-height:1.45;text-align:center;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+  .toast.show{opacity:1;transform:translateY(0)}
+
+  @media (max-width:560px){
+    .stage{padding:0;gap:0;justify-content:stretch}
+    .app{width:100%;height:100dvh;border:0;border-radius:0;box-shadow:none}
+    .stage-note{display:none}
   }
   @media (prefers-reduced-motion:reduce){
-    .live i{animation:none}
+    *,*::before,*::after{animation:none!important;transition:none!important}
   }
 </style>
 </head>
@@ -372,576 +406,1099 @@
     <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.8 2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.7-5 2.7.9-5.6-4-3.9 5.6-.8L12 3.8Z"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/></symbol>
     <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v5M12 16.2v.1"/></symbol>
-    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z"/><path d="M9 8h6M9 11.5h6"/></symbol>
   </defs>
 </svg>
 
-<div class="page">
-  <header class="masthead">
-    <div>
-      <p class="kicker">EVERYTIME UI PATTERN · 6 SCREENS</p>
-      <h1>출석코드 마켓</h1>
-      <p class="lede">에브리타임의 화면 언어를 그대로 가져와, 수업 중 공개되는 출석코드를 사고파는 흐름을 설계했다. 헌법 · 월/수 3교시 수업을 기준으로 홈 피드부터 결제, 판매 등록까지 이어진다.</p>
-    </div>
-    <div class="spec" aria-label="디자인 토큰">
-      <span class="swatch"><i style="background:#E01F26"></i>#E01F26</span>
-      <span class="swatch"><i style="background:#222222"></i>#222222</span>
-      <span class="swatch"><i style="background:#737373"></i>#737373</span>
-      <span class="swatch"><i style="background:#EBEBEB"></i>#EBEBEB</span>
-      <span class="swatch">Radius 8 · 14px Base</span>
-    </div>
-  </header>
-  <div class="rule"></div>
-
-  <main class="frames">
-
-    <figure class="screen-fig">
-      <figcaption>
-        <span class="num">01</span>
-        <div>
-          <div class="cap-title">홈 · 실시간 코드 피드</div>
-          <div class="cap-desc">내 출석 현황, 마감 임박 코드, 오늘 많이 찾는 강의를 한 화면에.</div>
+<div class="stage">
+  <div class="app" id="app">
+    <section class="view tabview" data-view="home">
+      <header class="app-head">
+        <div class="wordmark">에브리타임</div>
+        <div class="head-actions">
+          <button class="iconbtn" id="searchBtn" aria-label="검색"><svg class="ic"><use href="#i-search"/></svg></button>
+          <button class="iconbtn" id="bellBtn" aria-label="알림"><svg class="ic"><use href="#i-bell"/></svg><span class="dot"></span></button>
         </div>
-      </figcaption>
-      <div class="phone" aria-hidden="true">
-        <div class="screen">
-          <div class="statusbar">
-            <span>12:14</span>
-            <span class="sysicons">
-              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
-              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
-            </span>
-          </div>
+      </header>
+      <div class="search-wrap" id="searchWrap" hidden>
+        <input id="searchInput" type="search" placeholder="수업 이름으로 검색" aria-label="수업 이름으로 검색">
+        <button class="search-close" id="searchClose">닫기</button>
+      </div>
+      <div class="view-scroll">
+        <div class="schoolbar">
+          <span class="school">한국대학교 법학과 · 2학년 <svg class="ic xs"><use href="#i-chev-down"/></svg></span>
+          <span class="term">2026-2학기</span>
+        </div>
+        <section class="att-card">
+          <div class="att-top"><span>내 출석</span><span class="term">이번 학기</span></div>
+          <div class="att-main"><strong id="attCount">14</strong><span class="of">/ 16회</span><span class="warn"><i></i>결석 2회</span></div>
+          <div class="progress"><span id="attProgress" style="width:87.5%"></span></div>
+          <div class="att-foot"><span id="attRate">출석률 87.5%</span><span id="attFoot">구매 3 · 판매 1</span></div>
+        </section>
+        <div class="sec-head">
+          <h2>지금 뜨는 출석코드 <span class="live"><i></i>LIVE</span></h2>
+          <button class="text-link" data-tab="board">전체보기</button>
+        </div>
+        <div id="homeFeed"></div>
+        <div class="sec-head">
+          <h2>오늘 많이 찾는 강의</h2>
+          <button class="text-link" data-tab="timetable">시간표</button>
+        </div>
+        <div id="popularList"></div>
+        <div class="safe-strip"><svg class="ic xs"><use href="#i-shield"/></svg> 코드 확인 후 정산되는 안전 거래</div>
+      </div>
+      <button class="fab" data-action="sell" aria-label="출석코드 판매 등록"><svg class="ic"><use href="#i-pencil"/></svg></button>
+    </section>
 
-          <div class="app-head">
-            <div class="wordmark">에브리타임</div>
-            <div class="head-actions">
-              <span class="iconbtn"><svg class="ic"><use href="#i-search"/></svg></span>
-              <span class="iconbtn"><svg class="ic"><use href="#i-bell"/></svg><span class="dot"></span></span>
-            </div>
-          </div>
-
-          <div class="schoolbar">
-            <span class="school">한국대학교 법학과 · 2학년 <svg class="ic xs"><use href="#i-chev-down"/></svg></span>
-            <span class="term">2026-2학기</span>
-          </div>
-
-          <section class="att-card">
-            <div class="att-top"><span>내 출석</span><span class="term">이번 학기</span></div>
-            <div class="att-main">
-              <strong>14</strong><span class="of">/ 16회</span>
-              <span class="warn"><i></i>결석 2회</span>
-            </div>
-            <div class="progress"><span style="width:87.5%"></span></div>
-            <div class="att-foot"><span>출석률 87.5%</span><span>구매 3 · 판매 1</span></div>
-          </section>
-
-          <div class="sec-head">
-            <h2>지금 뜨는 출석코드 <span class="live"><i></i>LIVE</span></h2>
-            <span class="more">전체보기</span>
-          </div>
-
-          <article class="mkt-row first">
-            <div class="mkt-main">
-              <div class="mkt-line"><span class="pill-class">헌법</span><span class="mkt-title">3교시 출석코드 6자리</span></div>
-              <div class="mkt-meta">익명 · 거래 128회 · ★ 4.9 · 응답 1분</div>
-            </div>
-            <div class="mkt-side"><div class="mkt-price">2,500<small>원</small></div><span class="mkt-time">3분 남음</span></div>
-          </article>
-
-          <article class="mkt-row">
-            <div class="mkt-main">
-              <div class="mkt-line"><span class="pill-class">민법총칙</span><span class="mkt-title">2교시 출석코드 6자리</span></div>
-              <div class="mkt-meta">익명 · 거래 64회 · ★ 4.7 · 응답 3분</div>
-            </div>
-            <div class="mkt-side"><div class="mkt-price">1,800<small>원</small></div><span class="mkt-time">12분 남음</span></div>
-          </article>
-
-          <article class="mkt-row">
-            <div class="mkt-main">
-              <div class="mkt-line"><span class="pill-class">형법각론</span><span class="mkt-title">4교시 출석코드 6자리</span></div>
-              <div class="mkt-meta">익명 · 거래 21회 · ★ 4.5 · 응답 6분</div>
-            </div>
-            <div class="mkt-side"><div class="mkt-price">3,000<small>원</small></div><span class="mkt-time done">마감</span></div>
-          </article>
-
-          <div class="sec-head">
-            <h2>오늘 많이 찾는 강의</h2>
-            <span class="more">시간표</span>
-          </div>
-
-          <div class="rank-row">
-            <span class="rank">1</span>
-            <div><div class="rank-name">헌법</div><div class="rank-sub">김법조 교수 · 월/수 3교시</div></div>
-            <div class="rank-price">시세 2,300원 <span>· 12건</span></div>
-          </div>
-          <div class="rank-row">
-            <span class="rank">2</span>
-            <div><div class="rank-name">민법총칙</div><div class="rank-sub">박민법 교수 · 월/수 2교시</div></div>
-            <div class="rank-price">시세 1,900원 <span>· 8건</span></div>
-          </div>
-
-          <div class="safe-strip"><svg class="ic xs"><use href="#i-shield"/></svg> 코드 확인 후 정산되는 안전 거래</div>
-
-          <div class="tabbar">
-            <span class="tabitem active"><svg class="ic"><use href="#i-home"/></svg>홈</span>
-            <span class="tabitem"><svg class="ic"><use href="#i-board"/></svg>게시판</span>
-            <span class="tabitem"><svg class="ic"><use href="#i-calendar"/></svg>시간표</span>
-            <span class="tabitem"><svg class="ic"><use href="#i-chat"/></svg>쪽지</span>
-          </div>
-          <span class="fab"><svg class="ic"><use href="#i-pencil"/></svg></span>
-          <div class="home-bar"></div>
+    <section class="view" data-view="class" hidden>
+      <div class="nav">
+        <div class="nav-side"><button class="iconbtn" id="classBack" aria-label="뒤로"><svg class="ic"><use href="#i-chev-left"/></svg></button></div>
+        <span class="nav-title" id="classTitle">헌법</span>
+        <div class="nav-side right">
+          <button class="iconbtn" id="classShare" aria-label="공유"><svg class="ic"><use href="#i-share"/></svg></button>
+          <button class="iconbtn" id="classMore" aria-label="더보기"><svg class="ic"><use href="#i-more"/></svg></button>
         </div>
       </div>
-    </figure>
-
-    <figure class="screen-fig">
-      <figcaption>
-        <span class="num">02</span>
-        <div>
-          <div class="cap-title">수업 상세 · 헌법</div>
-          <div class="cap-desc">오늘 출석 상태와 시세, 판매자 신뢰도를 한 리스트에 모은다.</div>
+      <div class="view-scroll class-scroll">
+        <div class="class-hero">
+          <span class="chip-outline" id="classChip">전공필수 · 3학점</span>
+          <h2 id="className">헌법</h2>
+          <p class="class-meta" id="classMeta">김법조 교수 · 월/수 3교시 · 법학관 301</p>
+          <p class="class-rating"><svg class="ic xs fill"><use href="#i-star"/></svg> <span id="classRatingValue">4.8</span> <span id="classReviewCount">강의평 48</span><span class="sep">·</span><span id="classStudents">수강 312명</span></p>
         </div>
-      </figcaption>
-      <div class="phone" aria-hidden="true">
-        <div class="screen">
-          <div class="statusbar">
-            <span>12:14</span>
-            <span class="sysicons">
-              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
-              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
-            </span>
+        <div class="today-card">
+          <div class="today-top">
+            <span class="live-chip"><i></i><span id="todayChip">출석체크 진행 중</span></span>
+            <span class="timer" id="todayTimer">08:42<span>남음</span></span>
           </div>
-
-          <div class="nav">
-            <div class="nav-side"><span class="iconbtn"><svg class="ic"><use href="#i-chev-left"/></svg></span></div>
-            <span class="nav-title">헌법</span>
-            <div class="nav-side right">
-              <span class="iconbtn"><svg class="ic"><use href="#i-share"/></svg></span>
-              <span class="iconbtn"><svg class="ic"><use href="#i-more"/></svg></span>
-            </div>
+          <div class="today-row">
+            <div><strong id="todayPeriod">오늘 3교시</strong><span class="place" id="todayPlace">법학관 301</span></div>
+            <span class="state-badge" id="todayBadge">미인증</span>
           </div>
-
-          <div class="class-hero">
-            <span class="chip-outline">전공필수 · 3학점</span>
-            <h2>헌법</h2>
-            <p class="class-meta">김법조 교수 · 월/수 3교시 · 법학관 301</p>
-            <p class="class-rating"><svg class="ic xs fill"><use href="#i-star"/></svg> 4.8 <span>강의평 48</span><span class="sep">·</span><span>수강 312명</span></p>
-          </div>
-
-          <div class="today-card">
-            <div class="today-top">
-              <span class="live-chip"><i></i>출석체크 진행 중</span>
-              <span class="timer">08:42<span>남음</span></span>
-            </div>
-            <div class="today-row">
-              <div><strong>오늘 3교시</strong><span class="place">법학관 301</span></div>
-              <span class="state-badge">미인증</span>
-            </div>
-            <div class="today-note"><svg class="ic xs"><use href="#i-alert"/></svg> 코드를 입력하지 않으면 <b>결석 처리</b>돼요</div>
-          </div>
-
-          <div class="tabs">
-            <span class="tab active">판매중 <span class="count">12</span></span>
-            <span class="tab">거래완료</span>
-            <span class="tab">강의평</span>
-          </div>
-
-          <div class="price-card">
-            <div class="price-left">
-              <span class="price-label">오늘 거래 시세</span>
-              <strong>2,300<span>원</span></strong>
-              <span class="price-sub">최저 1,500 · 최고 3,000</span>
-            </div>
-            <div class="spark">
-              <i style="height:12px"></i><i style="height:19px"></i><i style="height:15px"></i><i style="height:24px"></i><i style="height:21px"></i><i style="height:28px"></i><i class="on" style="height:24px"></i>
-            </div>
-          </div>
-
-          <article class="seller-row">
-            <span class="seller-av">익</span>
-            <div class="seller-main">
-              <div class="seller-title">출석코드 6자리 <span class="mini-badge">즉시공개</span></div>
-              <div class="seller-meta">거래 128회 · ★ 4.9 · 평균 응답 1분</div>
-            </div>
-            <div class="seller-side"><strong>2,500<small>원</small></strong><span>8분 남음</span></div>
-          </article>
-          <article class="seller-row">
-            <span class="seller-av">익</span>
-            <div class="seller-main">
-              <div class="seller-title">출석코드 6자리 <span class="mini-badge">즉시공개</span></div>
-              <div class="seller-meta">거래 42회 · ★ 4.7 · 평균 응답 2분</div>
-            </div>
-            <div class="seller-side"><strong>2,200<small>원</small></strong><span>11분 남음</span></div>
-          </article>
-          <article class="seller-row">
-            <span class="seller-av">익</span>
-            <div class="seller-main">
-              <div class="seller-title">출석코드 6자리</div>
-              <div class="seller-meta">거래 7회 · ★ 4.3 · 평균 응답 9분</div>
-            </div>
-            <div class="seller-side"><strong>1,900<small>원</small></strong><span>16분 남음</span></div>
-          </article>
-          <article class="seller-row">
-            <span class="seller-av">익</span>
-            <div class="seller-main">
-              <div class="seller-title">출석코드 6자리</div>
-              <div class="seller-meta">거래 3회 · ★ 4.0 · 평균 응답 14분</div>
-            </div>
-            <div class="seller-side"><strong>1,700<small>원</small></strong><span>21분 남음</span></div>
-          </article>
-
-          <div class="cta-dock">
-            <div class="escrow-line"><svg class="ic xs"><use href="#i-shield"/></svg> 코드 확인 후 정산 · 허위 코드 전액 환불</div>
-            <div class="btn-primary">2,500원에 코드 구매하기</div>
-          </div>
-          <div class="home-bar"></div>
+          <div class="today-note" id="todayNote"><svg class="ic xs"><use href="#i-alert"/></svg> 코드를 입력하지 않으면 <b>결석 처리</b>돼요</div>
+        </div>
+        <div class="tabs" role="tablist" aria-label="수업 정보">
+          <button class="tab active" data-class-tab="sellers" role="tab" aria-selected="true">판매중 <span class="count" id="sellerCount">4</span></button>
+          <button class="tab" data-class-tab="history" role="tab" aria-selected="false">거래완료</button>
+          <button class="tab" data-class-tab="reviews" role="tab" aria-selected="false">강의평</button>
+        </div>
+        <div id="classPanel" role="tabpanel"></div>
+        <div class="class-info">
+          <div class="class-info-title"><svg class="ic"><use href="#i-shield"/></svg> 안전 거래 안내</div>
+          <p>결제 후 코드가 바로 공개되고, 출석 화면에 입력하기 전까지 판매자에게 정산되지 않아요. 허위 코드는 전액 환불됩니다.</p>
         </div>
       </div>
-    </figure>
+      <div class="cta-dock">
+        <div class="escrow-line"><svg class="ic xs"><use href="#i-shield"/></svg><span id="classEscrow">코드 확인 후 정산 · 허위 코드 전액 환불</span></div>
+        <button class="btn-primary" id="buyBtn" data-mode="buy">2,500원에 코드 구매하기</button>
+      </div>
+    </section>
 
-    <figure class="screen-fig">
-      <figcaption>
-        <span class="num">03</span>
-        <div>
-          <div class="cap-title">결제 · 바텀시트</div>
-          <div class="cap-desc">화면 전환 없이 결제 수단과 정산 조건을 확인하고 끝낸다.</div>
-        </div>
-      </figcaption>
-      <div class="phone" aria-hidden="true">
-        <div class="screen">
-          <div class="dim-screen">
-            <div class="statusbar">
-              <span>12:14</span>
-              <span class="sysicons">
-                <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
-                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
-                <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
-              </span>
-            </div>
-            <div class="nav">
-              <div class="nav-side"><span class="iconbtn"><svg class="ic"><use href="#i-chev-left"/></svg></span></div>
-              <span class="nav-title">헌법</span>
-              <div class="nav-side right"><span class="iconbtn"><svg class="ic"><use href="#i-share"/></svg></span><span class="iconbtn"><svg class="ic"><use href="#i-more"/></svg></span></div>
-            </div>
-            <div class="class-hero">
-              <span class="chip-outline">전공필수 · 3학점</span>
-              <h2>헌법</h2>
-              <p class="class-meta">김법조 교수 · 월/수 3교시 · 법학관 301</p>
-            </div>
-            <div class="today-card">
-              <div class="today-top"><span class="live-chip"><i></i>출석체크 진행 중</span><span class="timer">08:42<span>남음</span></span></div>
-              <div class="today-row"><div><strong>오늘 3교시</strong><span class="place">법학관 301</span></div><span class="state-badge">미인증</span></div>
-            </div>
-            <div class="tabs"><span class="tab active">판매중 <span class="count">12</span></span><span class="tab">거래완료</span><span class="tab">강의평</span></div>
-            <article class="seller-row">
-              <span class="seller-av">익</span>
-              <div class="seller-main"><div class="seller-title">출석코드 6자리 <span class="mini-badge">즉시공개</span></div><div class="seller-meta">거래 128회 · ★ 4.9 · 평균 응답 1분</div></div>
-              <div class="seller-side"><strong>2,500<small>원</small></strong><span>8분 남음</span></div>
-            </article>
-            <div style="height:5px"></div>
+    <section class="view" data-view="success" hidden>
+      <div class="nav">
+        <div class="nav-side"><button class="iconbtn" id="successClose" aria-label="닫기"><svg class="ic"><use href="#i-close"/></svg></button></div>
+        <span class="nav-title">구매 완료</span>
+        <div class="nav-side right"><button class="iconbtn" id="successMore" aria-label="더보기"><svg class="ic"><use href="#i-more"/></svg></button></div>
+      </div>
+      <div class="view-scroll success-scroll">
+        <div class="done-body">
+          <div class="done-icon"><svg class="ic"><use href="#i-check"/></svg></div>
+          <h2>출석코드를 받았어요</h2>
+          <p class="done-sub" id="successSub">헌법 3교시 · 에타페이 2,500원</p>
+          <div class="seller-line" id="successSeller">판매자 익명 · 거래 128회 · ★ 4.9</div>
+          <div class="code-card">
+            <div class="code-label"><span>출석코드</span><span class="valid-chip"><svg class="ic" style="width:10px;height:10px"><use href="#i-clock"/></svg> 수업 종료까지</span></div>
+            <div class="digits" id="successDigits"></div>
+            <button class="copy-btn" id="copyBtn"><svg class="ic"><use href="#i-copy"/></svg> 코드 복사</button>
+            <div class="valid-line"><svg class="ic" style="width:11px;height:11px"><use href="#i-clock"/></svg> 남은 시간 <b>06:12</b></div>
           </div>
-
-          <div class="scrim"></div>
-
-          <div class="sheet">
-            <div class="grabber"></div>
-            <div class="sheet-head">
-              <h2>출석코드 구매</h2>
-              <span class="iconbtn"><svg class="ic"><use href="#i-close"/></svg></span>
-            </div>
-
-            <div class="buy-item">
-              <span class="buy-thumb">헌</span>
-              <div class="buy-main">
-                <strong>헌법 · 3교시</strong>
-                <span>판매자 익명 · 거래 128회 · ★ 4.9</span>
-              </div>
-              <div class="buy-price">2,500<small>원</small></div>
-            </div>
-
-            <div class="sheet-label">결제 수단</div>
-            <div class="pay-row selected">
-              <span class="radio"></span>
-              <span class="pay-ic"><svg class="ic"><use href="#i-wallet"/></svg></span>
-              <div class="pay-main"><strong>에타페이 잔액</strong><span>12,400원</span></div>
-              <span class="pay-check"><svg class="ic"><use href="#i-check"/></svg></span>
-            </div>
-            <div class="pay-row">
-              <span class="radio"></span>
-              <span class="pay-ic"><svg class="ic"><use href="#i-card"/></svg></span>
-              <div class="pay-main"><strong>카드 · 간편결제</strong><span>등록된 카드 1개</span></div>
-            </div>
-
-            <div class="bill">
-              <div class="bill-row"><span>코드 금액</span><b>2,500원</b></div>
-              <div class="bill-row"><span>수수료</span><b>0원</b></div>
-              <div class="bill-row total"><span>총 결제 금액</span><b>2,500원</b></div>
-            </div>
-
-            <div class="escrow-box">
-              <svg class="ic"><use href="#i-shield"/></svg>
-              <p><strong>코드를 확인한 뒤 판매자에게 정산돼요</strong>허위 코드였다면 24시간 안에 신고하면 전액 환불됩니다.</p>
-            </div>
-
-            <div class="btn-primary">2,500원 결제하기</div>
-            <p class="terms">결제 시 출석코드 거래 약관에 동의하게 됩니다.</p>
+          <div class="steps">
+            <div class="step"><span class="step-num">1</span><span>코드를 복사해요</span><svg class="ic"><use href="#i-check"/></svg></div>
+            <div class="step"><span class="step-num">2</span><span>에브리타임 <b>출석 화면</b>으로 이동</span><svg class="ic"><use href="#i-chev-right"/></svg></div>
+            <div class="step"><span class="step-num">3</span><span>6자리를 입력하면 <b>출석 인정</b></span></div>
           </div>
-          <div class="home-bar"></div>
         </div>
       </div>
-    </figure>
+      <div class="done-dock">
+        <button class="btn-primary" id="verifyBtn" data-mode="verify">출석 인증하러 가기</button>
+        <button class="link-btn" id="receiptBtn">영수증 보기</button>
+        <div class="safe-note"><svg class="ic" style="width:11px;height:11px"><use href="#i-shield"/></svg> 허위 코드는 24시간 안에 신고하면 전액 환불</div>
+      </div>
+    </section>
 
-    <figure class="screen-fig">
-      <figcaption>
-        <span class="num">04</span>
-        <div>
-          <div class="cap-title">코드 공개 · 구매 완료</div>
-          <div class="cap-desc">결제 직후 6자리 코드와 유효 시간, 인증 동선을 한 번에 보여준다.</div>
-        </div>
-      </figcaption>
-      <div class="phone" aria-hidden="true">
-        <div class="screen">
-          <div class="statusbar">
-            <span>12:14</span>
-            <span class="sysicons">
-              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
-              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
-            </span>
-          </div>
-
-          <div class="nav">
-            <div class="nav-side"><span class="iconbtn"><svg class="ic"><use href="#i-close"/></svg></span></div>
-            <span class="nav-title">구매 완료</span>
-            <div class="nav-side right"><span class="iconbtn"><svg class="ic"><use href="#i-more"/></svg></span></div>
-          </div>
-
-          <div class="done-body">
-            <div class="done-icon"><svg class="ic"><use href="#i-check"/></svg></div>
-            <h2>출석코드를 받았어요</h2>
-            <p class="done-sub">헌법 3교시 · 에타페이 2,500원</p>
-            <div class="seller-line">판매자 익명 · 거래 128회 · ★ 4.9</div>
-
-            <div class="code-card">
-              <div class="code-label"><span>출석코드</span><span class="valid-chip"><svg class="ic" style="width:10px;height:10px"><use href="#i-clock"/></svg> 12:20까지</span></div>
-              <div class="digits"><span>4</span><span>8</span><span>2</span><span>9</span><span>1</span><span>7</span></div>
-              <div class="copy-btn"><svg class="ic"><use href="#i-copy"/></svg> 코드 복사</div>
-              <div class="valid-line"><svg class="ic" style="width:11px;height:11px"><use href="#i-clock"/></svg> 남은 시간 <b>06:12</b></div>
-            </div>
-
-            <div class="steps">
-              <div class="step"><span class="step-num">1</span><span>코드를 복사해요</span><svg class="ic"><use href="#i-check"/></svg></div>
-              <div class="step"><span class="step-num">2</span><span>에브리타임 <b>출석 화면</b>으로 이동</span><svg class="ic"><use href="#i-chev-right"/></svg></div>
-              <div class="step"><span class="step-num">3</span><span>6자리를 입력하면 <b>출석 인정</b></span></div>
-            </div>
-          </div>
-
-          <div class="done-dock">
-            <div class="btn-primary">출석 인증하러 가기</div>
-            <span class="link-btn">영수증 보기</span>
-            <div class="safe-note"><svg class="ic" style="width:11px;height:11px"><use href="#i-shield"/></svg> 허위 코드는 24시간 안에 신고하면 전액 환불</div>
-          </div>
-          <div class="home-bar"></div>
+    <section class="view" data-view="verified" hidden>
+      <div class="nav">
+        <div class="nav-side"><button class="iconbtn" id="verifiedClose" aria-label="닫기"><svg class="ic"><use href="#i-close"/></svg></button></div>
+        <span class="nav-title">출석 인증</span>
+        <div class="nav-side right"></div>
+      </div>
+      <div class="verified-body">
+        <div class="done-icon"><svg class="ic"><use href="#i-check"/></svg></div>
+        <h2>출석 인정 완료</h2>
+        <span class="verified-class" id="verifiedClass">헌법 3교시</span>
+        <p class="verified-text" id="verifiedText">오늘 3교시 출석이 반영됐어요.</p>
+        <div class="verified-count"><span>이번 학기</span> <b id="verifiedCount">15 / 16</b></div>
+        <div class="verified-actions">
+          <button class="btn-primary" id="verifiedHome">홈으로</button>
+          <button class="btn-secondary" id="verifiedTt">시간표 보기</button>
         </div>
       </div>
-    </figure>
+    </section>
 
-    <figure class="screen-fig">
-      <figcaption>
-        <span class="num">05</span>
-        <div>
-          <div class="cap-title">판매 등록</div>
-          <div class="cap-desc">코드·가격·마감을 한 폼에. 시세와 평균 판매 시간을 옆에서 안내한다.</div>
-        </div>
-      </figcaption>
-      <div class="phone" aria-hidden="true">
-        <div class="screen">
-          <div class="statusbar">
-            <span>12:14</span>
-            <span class="sysicons">
-              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
-              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
-            </span>
+    <section class="view" data-view="sell" hidden>
+      <div class="sell-head">
+        <button class="iconbtn" id="sellClose" aria-label="닫기"><svg class="ic"><use href="#i-close"/></svg></button>
+        <span class="nav-title">출석코드 판매</span>
+        <span style="width:44px"></span>
+      </div>
+      <div class="view-scroll sell-scroll">
+        <div class="form">
+          <div class="field">
+            <div class="field-head"><span class="field-label">수업</span><span class="field-hint">수업 선택</span></div>
+            <div class="class-options">
+              <button class="class-option on" data-sell-class="heonbeop">헌법</button>
+              <button class="class-option" data-sell-class="minbeop">민법총칙</button>
+              <button class="class-option" data-sell-class="hyeongbeop">형법각론</button>
+            </div>
+            <div class="sell-class-meta" id="sellClassMeta"><span class="mini-badge">수업 중</span> 월/수 3교시 · 법학관 301 · 김법조</div>
           </div>
-
-          <div class="sell-head">
-            <span class="iconbtn"><svg class="ic"><use href="#i-close"/></svg></span>
-            <span class="nav-title">출석코드 판매</span>
-            <span class="save">임시저장</span>
+          <div class="field">
+            <div class="field-head"><span class="field-label">출석코드</span><span class="field-hint">숫자 6자리</span></div>
+            <div class="code-boxes" id="sellCode">
+              <input inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="출석코드 1번째 자리">
+              <input inputmode="numeric" maxlength="1" aria-label="출석코드 2번째 자리">
+              <input inputmode="numeric" maxlength="1" aria-label="출석코드 3번째 자리">
+              <input inputmode="numeric" maxlength="1" aria-label="출석코드 4번째 자리">
+              <input inputmode="numeric" maxlength="1" aria-label="출석코드 5번째 자리">
+              <input inputmode="numeric" maxlength="1" aria-label="출석코드 6번째 자리">
+            </div>
+            <p class="field-error" id="codeError" hidden></p>
+            <div class="helper"><svg class="ic"><use href="#i-camera"/></svg> 칠판 코드를 촬영해 인식<span class="right">판매 전까지 비공개</span></div>
           </div>
-
-          <div class="form">
-            <div class="field">
-              <div class="field-head"><span class="field-label">수업</span><span class="field-hint">오늘 수업</span></div>
-              <div class="class-select">
-                <span class="buy-thumb">헌</span>
-                <div class="cs-main">
-                  <strong>헌법 <span class="mini-badge">수업 중</span></strong>
-                  <span>월/수 3교시 · 법학관 301 · 김법조</span>
-                </div>
-                <svg class="ic"><use href="#i-chev-down"/></svg>
-              </div>
+          <div class="field">
+            <div class="field-head"><span class="field-label">판매 가격</span><span class="field-hint">오늘 시세 2,300원</span></div>
+            <div class="price-input"><span class="won">₩</span><input id="sellPrice" inputmode="numeric" value="2,500" aria-label="판매 가격"><span class="unit">원</span></div>
+            <div class="chips" id="sellPriceChips">
+              <button class="chip" data-price="1500">1,500</button>
+              <button class="chip" data-price="2000">2,000</button>
+              <button class="chip on" data-price="2500">2,500</button>
+              <button class="chip" data-price="3000">3,000</button>
             </div>
-
-            <div class="field">
-              <div class="field-head"><span class="field-label">출석코드</span><span class="field-hint">숫자 6자리</span></div>
-              <div class="code-boxes"><span>4</span><span>8</span><span>2</span><span>9</span><span>1</span><span>7</span></div>
-              <div class="helper"><svg class="ic"><use href="#i-camera"/></svg> 칠판 코드를 촬영해 인식<span class="right">판매 전까지 비공개</span></div>
+            <p class="field-error" id="priceError" hidden></p>
+            <div class="helper"><svg class="ic"><use href="#i-clock"/></svg> 이 가격이면 평균 4분 안에 판매돼요</div>
+          </div>
+          <div class="field">
+            <div class="field-head"><span class="field-label">마감 시간</span><span class="field-hint">등록 후 자동 마감</span></div>
+            <div class="chips deadline" id="sellDeadlineChips">
+              <button class="chip" data-deadline="10">10분</button>
+              <button class="chip on" data-deadline="20">20분</button>
+              <button class="chip" data-deadline="end">수업 종료까지</button>
             </div>
-
-            <div class="field">
-              <div class="field-head"><span class="field-label">판매 가격</span><span class="field-hint">오늘 시세 2,300원</span></div>
-              <div class="price-input"><span class="won">₩</span><strong>2,500<span class="unit">원</span></strong></div>
-              <div class="chips">
-                <span class="chip">1,500</span>
-                <span class="chip">2,000</span>
-                <span class="chip on">2,500</span>
-                <span class="chip">3,000</span>
-              </div>
-              <div class="helper"><svg class="ic"><use href="#i-clock"/></svg> 이 가격이면 평균 4분 안에 판매돼요</div>
-            </div>
-
-            <div class="field">
-              <div class="field-head"><span class="field-label">마감 시간</span><span class="field-hint">12:34 자동 마감</span></div>
-              <div class="chips deadline">
-                <span class="chip">10분</span>
-                <span class="chip on">20분</span>
-                <span class="chip">수업 종료까지</span>
-              </div>
-              <div class="notice">
-                <svg class="ic"><use href="#i-alert"/></svg>
-                <p>입력한 코드가 틀리면 판매가 취소되고 페널티가 붙어요. 구매자에게는 결제 후에만 코드가 공개됩니다.</p>
-              </div>
-            </div>
-
-            <div class="payout">
-              <div class="payout-row"><span>정산 예정 금액</span><strong>2,500원</strong></div>
-              <p>구매자가 코드를 확인하면 에타페이로 들어와요.</p>
+            <div class="notice">
+              <svg class="ic"><use href="#i-alert"/></svg>
+              <p>입력한 코드가 틀리면 판매가 취소되고 페널티가 붙어요. 구매자에게는 결제 후에만 코드가 공개됩니다.</p>
             </div>
           </div>
-
-          <div class="sell-dock">
-            <div class="btn-primary">2,500원에 등록하기</div>
+          <div class="payout">
+            <div class="payout-row"><span>정산 예정 금액</span><strong id="payoutAmount">2,500원</strong></div>
+            <p>구매자가 코드를 확인하면 에타페이로 들어와요.</p>
           </div>
-          <div class="home-bar"></div>
         </div>
       </div>
-    </figure>
+      <div class="sell-dock">
+        <button class="btn-primary" id="sellSubmit">2,500원에 등록하기</button>
+      </div>
+    </section>
 
-    <figure class="screen-fig">
-      <figcaption>
-        <span class="num">06</span>
-        <div>
-          <div class="cap-title">시간표 · 구매 진입점</div>
-          <div class="cap-desc">헌법 블록에 오늘 코드 상태를 얹어, 시간표에서 바로 구매로 넘어간다.</div>
+    <section class="view tabview" data-view="timetable" hidden>
+      <div class="tt-head">
+        <div class="tt-title-wrap">
+          <h2 class="tt-title">시간표</h2>
+          <span class="semester">2026-2학기 <svg class="ic"><use href="#i-chev-down"/></svg></span>
         </div>
-      </figcaption>
-      <div class="phone" aria-hidden="true">
-        <div class="screen">
-          <div class="statusbar">
-            <span>12:14</span>
-            <span class="sysicons">
-              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
-              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
-            </span>
-          </div>
-
-          <div class="tt-head">
-            <div class="tt-title-wrap">
-              <h2 class="tt-title">시간표</h2>
-              <span class="semester">2026-2학기 <svg class="ic"><use href="#i-chev-down"/></svg></span>
+        <button class="iconbtn" id="ttEdit" aria-label="시간표 편집"><svg class="ic"><use href="#i-pencil"/></svg></button>
+      </div>
+      <div class="view-scroll">
+        <div class="tt-wrap">
+          <div class="tt-days"><span></span><span>월</span><span>화</span><span class="today">수</span><span>목</span><span>금</span></div>
+          <div class="tt-body">
+            <div class="tt-times"><span class="tt-time">09:00</span><span class="tt-time">10:30</span><span class="tt-time">12:00</span><span class="tt-time">13:30</span><span class="tt-time">15:00</span><span class="tt-time">16:30</span></div>
+            <div class="tt-col">
+              <button class="tt-block b-blue" data-open-class="minbeop" style="top:16.67%;height:16.5%"><strong>민법총칙</strong><span>법학관 202</span></button>
+              <button class="tt-block b-red" data-open-class="heonbeop" style="top:33.33%;height:16.5%"><strong>헌법</strong><span>법학관 301</span></button>
             </div>
-            <span class="iconbtn"><svg class="ic"><use href="#i-pencil"/></svg></span>
-          </div>
-
-          <div class="tt-wrap">
-            <div class="tt-days">
-              <span></span><span>월</span><span>화</span><span class="today">수</span><span>목</span><span>금</span>
+            <div class="tt-col">
+              <button class="tt-block b-green" data-open-class="hyeongbeop" style="top:16.67%;height:16.5%"><strong>형법각론</strong><span>법학관 105</span></button>
             </div>
-            <div class="tt-body">
-              <div class="tt-times">
-                <span class="tt-time">09:00</span><span class="tt-time">10:30</span><span class="tt-time">12:00</span><span class="tt-time">13:30</span><span class="tt-time">15:00</span><span class="tt-time">16:30</span>
-              </div>
-
-              <div class="tt-col">
-                <div class="tt-block b-blue" style="top:16.67%;height:16.5%"><strong>민법총칙</strong><span>법학관 202</span></div>
-                <div class="tt-block b-red" style="top:33.33%;height:16.5%"><strong>헌법</strong><span>법학관 301</span></div>
-              </div>
-              <div class="tt-col">
-                <div class="tt-block b-green" style="top:16.67%;height:16.5%"><strong>형법각론</strong><span>법학관 105</span></div>
-              </div>
-              <div class="tt-col">
-                <div class="tt-block b-red now" style="top:33.33%;height:16.5%"><strong>헌법</strong><span>코드 2,500원</span></div>
-              </div>
-              <div class="tt-col">
-                <div class="tt-block b-purple" style="top:66.67%;height:16.5%"><strong>커뮤니케이션</strong><span>교양관 401</span></div>
-              </div>
-              <div class="tt-col">
-                <div class="tt-block b-blue" style="top:16.67%;height:16.5%"><strong>민법총칙</strong><span>법학관 202</span></div>
-              </div>
-
-              <div class="nowline"><span class="dot"></span></div>
+            <div class="tt-col">
+              <button class="tt-block b-red now" data-open-class="heonbeop" style="top:33.33%;height:16.5%"><strong>헌법</strong><span id="ttHeonbeopState">코드 2,500원</span></button>
             </div>
-          </div>
-
-          <div class="tt-summary">
-            <div class="tt-sum-left">
-              <span class="eyebrow-red">오늘 출석 1 / 2</span>
-              <strong>헌법 3교시 · 코드 미인증</strong>
-              <span>마감까지 8분 · 판매 12건</span>
+            <div class="tt-col">
+              <div class="tt-block b-purple" style="top:66.67%;height:16.5%"><strong>커뮤니케이션</strong><span>교양관 401</span></div>
             </div>
-            <span class="btn-mini">2,500원 구매</span>
+            <div class="tt-col">
+              <button class="tt-block b-blue" data-open-class="minbeop" style="top:16.67%;height:16.5%"><strong>민법총칙</strong><span>법학관 202</span></button>
+            </div>
+            <div class="nowline"><span class="dot"></span></div>
           </div>
-
-          <div class="tabbar">
-            <span class="tabitem"><svg class="ic"><use href="#i-home"/></svg>홈</span>
-            <span class="tabitem"><svg class="ic"><use href="#i-board"/></svg>게시판</span>
-            <span class="tabitem active"><svg class="ic"><use href="#i-calendar"/></svg>시간표</span>
-            <span class="tabitem"><svg class="ic"><use href="#i-chat"/></svg>쪽지</span>
+        </div>
+        <div class="tt-summary">
+          <div class="tt-sum-left">
+            <span class="eyebrow-red" id="ttEyebrow">오늘 출석 1 / 2</span>
+            <strong id="ttTitle">헌법 3교시 · 코드 미인증</strong>
+            <span id="ttMeta">마감까지 8분 · 판매 12명</span>
           </div>
-          <div class="home-bar"></div>
+          <button class="btn-mini" id="ttBtn" data-open-class="heonbeop">2,500원 구매</button>
         </div>
       </div>
-    </figure>
+    </section>
 
-  </main>
+    <section class="view tabview" data-view="board" hidden>
+      <header class="app-head board-head">
+        <div><h1>게시판</h1><p>익명으로 올라온 오늘의 출석코드</p></div>
+        <button class="board-write" data-action="sell">코드 올리기</button>
+      </header>
+      <div class="view-scroll">
+        <div class="board-intro"><span>실시간 코드 <b id="boardCount">3</b>건</span><span>헌법 · 민법 · 형법</span></div>
+        <div id="boardFeed"></div>
+        <div class="safe-strip"><svg class="ic xs"><use href="#i-shield"/></svg> 코드 확인 후 정산되는 안전 거래</div>
+      </div>
+    </section>
 
-  <section class="notes">
-    <h2>디자인 패턴 메모</h2>
-    <p class="sub">에브리타임에서 가져온 것과, 출석코드 거래에 맞게 바꾼 것.</p>
-    <div class="note-grid">
-      <div class="note">
-        <strong>레드 한 색만 포인트로</strong>
-        <p>로고·가격·마감·주 액션에만 <code>#E01F26</code>. 본문은 <code>#222</code>, 메타는 <code>#737373</code>으로 두고 배경은 순백.</p>
+    <section class="view tabview" data-view="chat" hidden>
+      <header class="app-head board-head">
+        <div><h1>쪽지</h1><p>출석코드 거래 문의</p></div>
+      </header>
+      <div class="view-scroll">
+        <div class="empty-state">
+          <div class="empty-icon"><svg class="ic"><use href="#i-chat"/></svg></div>
+          <h2>쪽지가 없어요</h2>
+          <p>수업 상세에서 판매자에게 문의하면 이곳에 표시돼요.</p>
+          <button class="btn-secondary" style="max-width:200px" data-tab="home">수업 둘러보기</button>
+        </div>
       </div>
-      <div class="note">
-        <strong>카드보다 선</strong>
-        <p>1px <code>#EBEBEB</code> 구분선으로 리스트를 나누고, 13px 제목 + 10.5px 메타의 밀도를 유지한다. 그림자는 플로팅 버튼과 시트에만.</p>
-      </div>
-      <div class="note">
-        <strong>익명 대신 거래 이력</strong>
-        <p>닉네임이 없는 대신 거래 횟수·별점·평균 응답 시간으로 판매자 신뢰를 만든다. 에브리타임의 익명성과 마켓의 신뢰를 교차시킨 지점.</p>
-      </div>
-      <div class="note">
-        <strong>결제는 바텀시트로</strong>
-        <p>출석 마감이 몇 분 단위라 화면 전환을 줄였다. 수업 상세 위로 시트를 올려 맥락을 유지하고, 정산 조건은 결제 버튼 바로 위에 둔다.</p>
-      </div>
-      <div class="note">
-        <strong>시간표가 곧 상점</strong>
-        <p>시간표 블록에 오늘 코드 상태와 가격을 얹었다. 에브리타임 사용자가 가장 자주 여는 화면을 구매 진입점으로 재사용.</p>
-      </div>
-      <div class="note">
-        <strong>마감 압박의 시각화</strong>
-        <p>남은 시간은 레드 + tabular number로 고정폭. 3분·8분 같은 짧은 단위를 리스트 우측에 반복 배치해 판단 속도를 높인다.</p>
+    </section>
+
+    <nav class="tabbar" id="tabbar" aria-label="주요 메뉴">
+      <button class="tabitem active" data-tab="home" aria-current="page"><svg class="ic"><use href="#i-home"/></svg>홈</button>
+      <button class="tabitem" data-tab="board"><svg class="ic"><use href="#i-board"/></svg>게시판</button>
+      <button class="tabitem" data-tab="timetable"><svg class="ic"><use href="#i-calendar"/></svg>시간표</button>
+      <button class="tabitem" data-tab="chat"><svg class="ic"><use href="#i-chat"/></svg>쪽지</button>
+    </nav>
+
+    <div class="sheet-wrap" id="sheetWrap" hidden>
+      <div class="scrim" data-close-sheet></div>
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+        <div class="grabber"></div>
+        <div class="sheet-head">
+          <h2 id="sheetTitle">출석코드 구매</h2>
+          <button class="iconbtn" id="sheetClose" aria-label="닫기"><svg class="ic"><use href="#i-close"/></svg></button>
+        </div>
+        <div class="buy-item">
+          <span class="buy-thumb" id="sheetThumb">헌</span>
+          <div class="buy-main"><strong id="sheetClass">헌법 · 3교시</strong><span id="sheetSeller">판매자 익명 · 거래 128회 · ★ 4.9</span></div>
+          <div class="buy-price" id="sheetPrice">2,500<small>원</small></div>
+        </div>
+        <div class="sheet-label">결제 수단</div>
+        <button class="pay-row selected" data-pay="wallet">
+          <span class="radio"></span>
+          <span class="pay-ic"><svg class="ic"><use href="#i-wallet"/></svg></span>
+          <span class="pay-main"><strong>에타페이 잔액</strong><span id="sheetBalance">12,400원</span></span>
+          <span class="pay-check"><svg class="ic"><use href="#i-check"/></svg></span>
+        </button>
+        <button class="pay-row" data-pay="card">
+          <span class="radio"></span>
+          <span class="pay-ic"><svg class="ic"><use href="#i-card"/></svg></span>
+          <span class="pay-main"><strong>카드 · 간편결제</strong><span>등록된 카드 1개</span></span>
+          <span class="pay-check"><svg class="ic"><use href="#i-check"/></svg></span>
+        </button>
+        <div class="bill">
+          <div class="bill-row"><span>코드 금액</span><b id="sheetCodePrice">2,500원</b></div>
+          <div class="bill-row"><span>수수료</span><b>0원</b></div>
+          <div class="bill-row total"><span>총 결제 금액</span><b id="sheetTotal">2,500원</b></div>
+        </div>
+        <div class="escrow-box">
+          <svg class="ic"><use href="#i-shield"/></svg>
+          <p><strong>코드를 확인한 뒤 판매자에게 정산돼요</strong>허위 코드였다면 24시간 안에 신고하면 전액 환불됩니다.</p>
+        </div>
+        <p class="pay-error" id="payError" hidden></p>
+        <button class="btn-primary" id="payBtn">2,500원 결제하기</button>
+        <p class="terms">결제 시 출석코드 거래 약관에 동의하게 됩니다.</p>
       </div>
     </div>
-    <p class="disclaimer">실제 서비스가 아닌 UI/UX 디자인 목업입니다. 표시된 수업·판매자·금액은 모두 예시입니다.</p>
-  </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+  <p class="stage-note">출석코드 마켓 · 에브리타임 스타일 UI 목업 · 결제와 코드 공개는 데모입니다.</p>
 </div>
+
+<script>
+const CLASSES = {
+  heonbeop: {
+    name: '헌법', period: '3교시', chip: '전공필수 · 3학점',
+    prof: '김법조', schedule: '월/수 3교시', room: '법학관 301',
+    rating: '4.8', reviewCount: 48, students: 312,
+    sellers: [
+      { id: 'h1', price: 2500, trades: 128, rating: '4.9', response: '1분', left: '8분 남음', instant: true, code: '482917' },
+      { id: 'h2', price: 2200, trades: 42, rating: '4.7', response: '2분', left: '11분 남음', instant: true, code: '731205' },
+      { id: 'h3', price: 1900, trades: 7, rating: '4.3', response: '9분', left: '16분 남음', instant: false, code: '905471' },
+      { id: 'h4', price: 1700, trades: 3, rating: '4.0', response: '14분', left: '21분 남음', instant: false, code: '118263' }
+    ],
+    reviews: [
+      { rating: '5.0', text: '판례 흐름을 잡아줘서 시험 대비가 편했어요.', meta: '2026-1학기 · 12명에게 도움됨' },
+      { rating: '4.5', text: '자료가 많고 출석 기준이 명확합니다.', meta: '2026-1학기 · 7명에게 도움됨' }
+    ]
+  },
+  minbeop: {
+    name: '민법총칙', period: '2교시', chip: '전공필수 · 3학점',
+    prof: '박민법', schedule: '월/수 2교시', room: '법학관 202',
+    rating: '4.6', reviewCount: 31, students: 287,
+    sellers: [
+      { id: 'm1', price: 1800, trades: 64, rating: '4.7', response: '3분', left: '12분 남음', instant: true, code: '264813' },
+      { id: 'm2', price: 2000, trades: 18, rating: '4.5', response: '5분', left: '18분 남음', instant: false, code: '503972' }
+    ],
+    reviews: [
+      { rating: '4.8', text: '조문 설명이 깔끔하고 예시가 많아요.', meta: '2026-1학기 · 9명에게 도움됨' }
+    ]
+  },
+  hyeongbeop: {
+    name: '형법각론', period: '2교시', chip: '전공선택 · 3학점',
+    prof: '이형법', schedule: '화/목 2교시', room: '법학관 105',
+    rating: '4.5', reviewCount: 19, students: 198,
+    sellers: [
+      { id: 'x1', price: 3000, trades: 21, rating: '4.5', response: '6분', left: '18분 남음', instant: true, code: '617394' },
+      { id: 'x2', price: 2700, trades: 9, rating: '4.2', response: '11분', left: '24분 남음', instant: false, code: '840156' }
+    ],
+    reviews: [
+      { rating: '4.3', text: '사례 문제 풀이가 시험에 도움이 됐어요.', meta: '2026-1학기 · 5명에게 도움됨' }
+    ]
+  }
+};
+
+const POPULAR = [
+  { key: 'heonbeop', price: 2300, count: 12 },
+  { key: 'minbeop', price: 1900, count: 8 }
+];
+
+const state = {
+  tab: 'home', view: 'home', returnTab: 'home', sellReturn: 'home',
+  classKey: 'heonbeop', classTab: 'sellers', selectedSellerId: 'h1',
+  payMethod: 'wallet', wallet: 12400,
+  purchases: {}, attendance: {}, lastPurchase: null,
+  search: '', sellClass: 'heonbeop', sellDeadline: '20', sellCount: 0,
+  feed: [
+    { classKey: 'heonbeop', sellerId: 'h1' },
+    { classKey: 'minbeop', sellerId: 'm1' },
+    { classKey: 'hyeongbeop', sellerId: 'x1' }
+  ]
+};
+
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const fmt = (value) => Number(value).toLocaleString('ko-KR');
+const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+
+function sellerOf(classKey, sellerId) {
+  const cls = CLASSES[classKey];
+  return cls ? cls.sellers.find((seller) => seller.id === sellerId) : null;
+}
+
+function selectedSeller() {
+  const cls = CLASSES[state.classKey];
+  return cls.sellers.find((seller) => seller.id === state.selectedSellerId) || cls.sellers[0];
+}
+
+function verifiedCount() {
+  return Object.values(state.attendance).filter(Boolean).length;
+}
+
+function sellerMeta(seller) {
+  const parts = [seller.trades ? '거래 ' + seller.trades + '회' : '신규 판매자'];
+  if (seller.rating) parts.push('★ ' + seller.rating);
+  parts.push('응답 ' + seller.response);
+  return parts.join(' · ');
+}
+
+function feedRow(item, first) {
+  const cls = CLASSES[item.classKey];
+  const seller = sellerOf(item.classKey, item.sellerId);
+  if (!cls || !seller) return '';
+  const done = seller.left === '마감';
+  return '<button class="mkt-row' + (first ? ' first' : '') + '" data-open-class="' + item.classKey + '">' +
+    '<span class="mkt-main"><span class="mkt-line"><span class="pill-class">' + esc(cls.name) + '</span><span class="mkt-title">' + esc(cls.period) + ' 출석코드 6자리</span></span>' +
+    '<span class="mkt-meta">익명 · ' + sellerMeta(seller) + '</span></span>' +
+    '<span class="mkt-side"><span class="mkt-price">' + fmt(seller.price) + '<small>원</small></span><span class="mkt-time' + (done ? ' done' : '') + '">' + esc(seller.left) + '</span></span>' +
+    '</button>';
+}
+
+function renderHome() {
+  const attended = Math.min(16, 14 + verifiedCount());
+  $('#attCount').textContent = attended;
+  $('#attProgress').style.width = (attended / 16 * 100) + '%';
+  $('#attRate').textContent = '출석률 ' + (attended / 16 * 100).toFixed(1) + '%';
+  $('#attFoot').textContent = '구매 ' + (3 + Object.keys(state.purchases).length) + ' · 판매 ' + (1 + state.sellCount);
+  const query = state.search.trim();
+  let items = state.feed;
+  if (query) {
+    items = items.filter((item) => {
+      const cls = CLASSES[item.classKey];
+      const seller = sellerOf(item.classKey, item.sellerId);
+      return cls && (cls.name.includes(query) || (seller && String(seller.price).includes(query)));
+    });
+  }
+  $('#homeFeed').innerHTML = items.length
+    ? items.map((item, index) => feedRow(item, index === 0)).join('')
+    : '<div class="search-empty">검색 결과가 없어요.</div>';
+  $('#popularList').innerHTML = POPULAR.map((item, index) => {
+    const cls = CLASSES[item.key];
+    return '<button class="rank-row" data-open-class="' + item.key + '">' +
+      '<span class="rank">' + (index + 1) + '</span>' +
+      '<span><span class="rank-name">' + esc(cls.name) + '</span><span class="rank-sub">' + esc(cls.prof) + ' 교수 · ' + esc(cls.schedule) + '</span></span>' +
+      '<span class="rank-price">시세 ' + fmt(item.price) + '원 <span>· ' + item.count + '건</span></span>' +
+      '</button>';
+  }).join('');
+}
+
+function renderBoard() {
+  $('#boardCount').textContent = state.feed.length;
+  $('#boardFeed').innerHTML = state.feed.map((item, index) => feedRow(item, index === 0)).join('');
+}
+
+function priceCard(cls) {
+  const prices = cls.sellers.map((seller) => seller.price);
+  const average = Math.round(prices.reduce((a, b) => a + b, 0) / prices.length);
+  return '<div class="price-card"><div class="price-left"><span class="price-label">오늘 거래 시세</span>' +
+    '<strong>' + fmt(average) + '<span>원</span></strong>' +
+    '<span class="price-sub">최저 ' + fmt(Math.min(...prices)) + ' · 최고 ' + fmt(Math.max(...prices)) + ' · ' + cls.sellers.length + '건</span></div>' +
+    '<div class="spark"><i style="height:12px"></i><i style="height:19px"></i><i style="height:15px"></i><i style="height:24px"></i><i style="height:21px"></i><i style="height:28px"></i><i class="on" style="height:24px"></i></div></div>';
+}
+
+function sellerRow(seller) {
+  const selected = seller.id === state.selectedSellerId;
+  const badge = seller.mine ? '<span class="mini-badge">내 판매</span>' : (seller.instant ? '<span class="mini-badge">즉시공개</span>' : '');
+  return '<button class="seller-row' + (selected ? ' selected' : '') + '" data-seller="' + seller.id + '" aria-pressed="' + selected + '">' +
+    '<span class="seller-av">익</span>' +
+    '<span class="seller-main"><span class="seller-title">출석코드 6자리 ' + badge + '</span><span class="seller-meta">' + sellerMeta(seller) + '</span></span>' +
+    '<span class="seller-side"><strong>' + fmt(seller.price) + '<small>원</small></strong><span>' + esc(seller.left) + '</span></span>' +
+    '</button>';
+}
+
+function renderClassTabs() {
+  $$('[data-class-tab]').forEach((tab) => {
+    const active = tab.dataset.classTab === state.classTab;
+    tab.classList.toggle('active', active);
+    tab.setAttribute('aria-selected', String(active));
+  });
+  $('#sellerCount').textContent = CLASSES[state.classKey].sellers.length;
+}
+
+function renderClassPanel() {
+  const cls = CLASSES[state.classKey];
+  const panel = $('#classPanel');
+  if (state.classTab === 'sellers') {
+    panel.innerHTML = priceCard(cls) + cls.sellers.map(sellerRow).join('');
+    return;
+  }
+  if (state.classTab === 'history') {
+    const purchase = state.purchases[state.classKey];
+    if (!purchase) {
+      panel.innerHTML = '<div class="panel-empty">아직 거래 내역이 없어요.<span>코드를 구매하면 여기에 표시돼요.</span></div>';
+      return;
+    }
+    panel.innerHTML = '<div class="history-card"><div><span class="history-label">오늘 ' + esc(cls.period) + '</span><strong>출석코드 구매</strong><span>' + fmt(purchase.price) + '원 · ' + esc(purchase.paidWith) + '</span></div><span class="history-badge">' + (state.attendance[state.classKey] ? '출석 완료' : '코드 확인') + '</span></div>';
+    return;
+  }
+  panel.innerHTML = cls.reviews.map((review) => '<div class="review"><div class="review-top"><span class="seller-av">익</span><strong>익명</strong><span class="review-star">★ ' + esc(review.rating) + '</span></div><p>' + esc(review.text) + '</p><span class="review-meta">' + esc(review.meta) + '</span></div>').join('');
+}
+
+function renderClassToday() {
+  const cls = CLASSES[state.classKey];
+  const verified = !!state.attendance[state.classKey];
+  const purchase = state.purchases[state.classKey];
+  const chip = $('#todayChip');
+  const timer = $('#todayTimer');
+  const badge = $('#todayBadge');
+  const note = $('#todayNote');
+  $('#todayPeriod').textContent = '오늘 ' + cls.period;
+  $('#todayPlace').textContent = cls.room;
+  if (verified) {
+    chip.textContent = '출석 인증 완료';
+    timer.hidden = true;
+    badge.textContent = '인증 완료';
+    note.innerHTML = '<svg class="ic xs"><use href="#i-check"/></svg> 오늘 출석이 반영됐어요.';
+  } else if (purchase) {
+    chip.textContent = '출석체크 진행 중';
+    timer.hidden = false;
+    badge.textContent = '코드 확인';
+    note.innerHTML = '<svg class="ic xs"><use href="#i-check"/></svg> 출석 화면에 코드를 입력하세요.';
+  } else {
+    chip.textContent = '출석체크 진행 중';
+    timer.hidden = false;
+    badge.textContent = '미인증';
+    note.innerHTML = '<svg class="ic xs"><use href="#i-alert"/></svg> 코드를 입력하지 않으면 <b>결석 처리</b>돼요';
+  }
+}
+
+function updateClassCta() {
+  const cls = CLASSES[state.classKey];
+  const seller = selectedSeller();
+  const verified = !!state.attendance[state.classKey];
+  const purchase = state.purchases[state.classKey];
+  const button = $('#buyBtn');
+  button.classList.remove('done');
+  if (verified) {
+    button.textContent = '출석 인증 완료';
+    button.dataset.mode = 'verified';
+    button.classList.add('done');
+    $('#classEscrow').textContent = '오늘 출석이 반영됐어요';
+    return;
+  }
+  if (purchase) {
+    button.textContent = '구매한 코드 다시 보기';
+    button.dataset.mode = 'view';
+    $('#classEscrow').textContent = fmt(purchase.price) + '원 결제 완료 · 코드 확인';
+    return;
+  }
+  button.textContent = fmt(seller.price) + '원에 코드 구매하기';
+  button.dataset.mode = 'buy';
+  $('#classEscrow').textContent = '코드 확인 후 정산 · 허위 코드 전액 환불';
+}
+
+function renderClass() {
+  const cls = CLASSES[state.classKey];
+  $('#classTitle').textContent = cls.name;
+  $('#className').textContent = cls.name;
+  $('#classChip').textContent = cls.chip;
+  $('#classMeta').textContent = cls.prof + ' 교수 · ' + cls.schedule + ' · ' + cls.room;
+  $('#classRatingValue').textContent = cls.rating;
+  $('#classReviewCount').textContent = '강의평 ' + cls.reviewCount;
+  $('#classStudents').textContent = '수강 ' + cls.students + '명';
+  renderClassToday();
+  renderClassTabs();
+  renderClassPanel();
+  updateClassCta();
+}
+
+function openClass(classKey) {
+  if (!CLASSES[classKey]) return;
+  state.classKey = classKey;
+  state.returnTab = state.tab;
+  state.classTab = 'sellers';
+  state.selectedSellerId = CLASSES[classKey].sellers[0] ? CLASSES[classKey].sellers[0].id : null;
+  renderClass();
+  showView('class');
+}
+
+function renderTimetable() {
+  const verified = !!state.attendance.heonbeop;
+  const purchased = !!state.purchases.heonbeop;
+  $('#ttHeonbeopState').textContent = verified ? '출석 완료' : (purchased ? '코드 확인' : '코드 2,500원');
+  $('#ttEyebrow').textContent = verified ? '오늘 출석 1 / 2 · 인증 완료' : (purchased ? '오늘 출석 1 / 2 · 코드 확인' : '오늘 출석 1 / 2');
+  $('#ttTitle').textContent = verified ? '헌법 3교시 · 출석 인증 완료' : (purchased ? '헌법 3교시 · 코드 확인 완료' : '헌법 3교시 · 코드 미인증');
+  $('#ttMeta').textContent = verified ? '출석이 반영됐어요' : (purchased ? '구매한 코드를 다시 볼 수 있어요' : '마감까지 8분 · 판매 12명');
+  $('#ttBtn').textContent = verified ? '완료' : (purchased ? '코드 보기' : '2,500원 구매');
+}
+
+function renderSheet() {
+  const cls = CLASSES[state.classKey];
+  const seller = selectedSeller();
+  if (!seller) return;
+  $('#sheetThumb').textContent = cls.name.charAt(0);
+  $('#sheetClass').textContent = cls.name + ' · ' + cls.period;
+  $('#sheetSeller').textContent = '판매자 익명 · ' + sellerMeta(seller);
+  $('#sheetPrice').innerHTML = fmt(seller.price) + '<small>원</small>';
+  $('#sheetCodePrice').textContent = fmt(seller.price) + '원';
+  $('#sheetTotal').textContent = fmt(seller.price) + '원';
+  $('#sheetBalance').textContent = fmt(state.wallet) + '원';
+  $('#payBtn').textContent = fmt(seller.price) + '원 결제하기';
+  $('#payError').hidden = true;
+  $$('.pay-row').forEach((row) => row.classList.toggle('selected', row.dataset.pay === state.payMethod));
+}
+
+function openSheet() {
+  if (state.attendance[state.classKey]) {
+    toast('이미 출석 인증이 완료됐어요');
+    return;
+  }
+  if (state.purchases[state.classKey]) {
+    viewPurchased();
+    return;
+  }
+  state.lastFocus = document.activeElement;
+  state.payMethod = 'wallet';
+  renderSheet();
+  $('#sheetWrap').hidden = false;
+  requestAnimationFrame(() => $('#sheetClose').focus());
+}
+
+function closeSheet(restoreFocus = true) {
+  $('#sheetWrap').hidden = true;
+  if (restoreFocus && state.lastFocus) state.lastFocus.focus();
+}
+
+function pay() {
+  const cls = CLASSES[state.classKey];
+  const seller = selectedSeller();
+  if (!seller) return;
+  if (state.payMethod === 'wallet' && state.wallet < seller.price) {
+    $('#payError').textContent = '에타페이 잔액이 부족해요. 카드로 결제해 주세요.';
+    $('#payError').hidden = false;
+    return;
+  }
+  if (state.payMethod === 'wallet') {
+    state.wallet -= seller.price;
+    $('#sheetBalance').textContent = fmt(state.wallet) + '원';
+  }
+  const sellerLabel = '익명 · ' + (seller.trades ? '거래 ' + seller.trades + '회' : '신규 판매자') + (seller.rating ? ' · ★ ' + seller.rating : '');
+  const purchase = {
+    classKey: state.classKey,
+    sellerId: seller.id,
+    price: seller.price,
+    code: seller.code,
+    sellerLabel: sellerLabel,
+    paidWith: state.payMethod === 'wallet' ? '에타페이' : '카드'
+  };
+  state.purchases[state.classKey] = purchase;
+  state.lastPurchase = purchase;
+  closeSheet(false);
+  renderSuccess(purchase);
+  renderHome();
+  renderTimetable();
+  renderClass();
+  showView('success');
+  toast('결제가 완료됐어요');
+}
+
+function renderSuccess(purchase) {
+  const cls = CLASSES[purchase.classKey];
+  $('#successSub').textContent = cls.name + ' ' + cls.period + ' · ' + purchase.paidWith + ' ' + fmt(purchase.price) + '원';
+  $('#successSeller').textContent = '판매자 ' + purchase.sellerLabel;
+  $('#successDigits').innerHTML = purchase.code.split('').map((digit) => '<span>' + esc(digit) + '</span>').join('');
+  const verified = !!state.attendance[purchase.classKey];
+  const verifyButton = $('#verifyBtn');
+  verifyButton.textContent = verified ? '출석 인증 완료' : '출석 인증하러 가기';
+  verifyButton.dataset.mode = verified ? 'verified' : 'verify';
+}
+
+function viewPurchased() {
+  const purchase = state.purchases[state.classKey];
+  if (!purchase) return;
+  state.lastPurchase = purchase;
+  renderSuccess(purchase);
+  showView('success');
+}
+
+function renderVerified(purchase) {
+  const cls = CLASSES[purchase.classKey];
+  const count = Math.min(16, 14 + verifiedCount());
+  $('#verifiedClass').textContent = cls.name + ' ' + cls.period;
+  $('#verifiedText').textContent = '오늘 ' + cls.period + ' 출석이 반영됐어요. 이번 학기 출석 ' + count + '/16회.';
+  $('#verifiedCount').textContent = count + ' / 16';
+}
+
+function verifyAttendance() {
+  const purchase = state.lastPurchase || state.purchases[state.classKey];
+  if (!purchase) return;
+  if (state.attendance[purchase.classKey]) {
+    renderVerified(purchase);
+    showView('verified');
+    return;
+  }
+  state.attendance[purchase.classKey] = true;
+  renderVerified(purchase);
+  renderSuccess(purchase);
+  renderHome();
+  renderTimetable();
+  renderClass();
+  showView('verified');
+  toast('출석 인증이 완료됐어요');
+}
+
+async function copyCode() {
+  const purchase = state.lastPurchase || state.purchases[state.classKey];
+  if (!purchase) return;
+  try {
+    await navigator.clipboard.writeText(purchase.code);
+    toast('코드를 복사했어요');
+  } catch (error) {
+    const area = document.createElement('textarea');
+    area.value = purchase.code;
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    try {
+      document.execCommand('copy');
+      toast('코드를 복사했어요');
+    } catch (copyError) {
+      toast('코드: ' + purchase.code);
+    }
+    area.remove();
+  }
+}
+
+async function shareLink() {
+  const url = location.href.split('#')[0];
+  try {
+    await navigator.clipboard.writeText(url);
+    toast('링크를 복사했어요');
+  } catch (error) {
+    toast('주소창의 링크를 복사해 주세요');
+  }
+}
+
+function toast(message) {
+  const element = $('#toast');
+  element.textContent = message;
+  element.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => element.classList.remove('show'), 2200);
+}
+
+function renderPayMethods() {
+  $$('.pay-row').forEach((row) => row.classList.toggle('selected', row.dataset.pay === state.payMethod));
+  $('#payError').hidden = true;
+}
+
+function renderSellClass() {
+  const cls = CLASSES[state.sellClass];
+  $$('[data-sell-class]').forEach((button) => button.classList.toggle('on', button.dataset.sellClass === state.sellClass));
+  $('#sellClassMeta').innerHTML = (state.sellClass === 'heonbeop' ? '<span class="mini-badge">수업 중</span> ' : '') + esc(cls.schedule) + ' · ' + esc(cls.room) + ' · ' + esc(cls.prof);
+  updateSellSubmit();
+}
+
+function renderDeadlineChips() {
+  $$('#sellDeadlineChips [data-deadline]').forEach((chip) => chip.classList.toggle('on', chip.dataset.deadline === state.sellDeadline));
+}
+
+function renderPriceChips(price) {
+  $$('#sellPriceChips [data-price]').forEach((chip) => chip.classList.toggle('on', Number(chip.dataset.price) === price));
+}
+
+function updateSellSubmit() {
+  const price = Number($('#sellPrice').value.replace(/\D/g, ''));
+  $('#sellSubmit').textContent = price ? fmt(price) + '원에 등록하기' : '등록하기';
+  $('#payoutAmount').textContent = price ? fmt(price) + '원' : '-';
+}
+
+function setSellPrice(price) {
+  $('#sellPrice').value = fmt(price);
+  renderPriceChips(price);
+  updateSellSubmit();
+  clearPriceError();
+}
+
+function clearCodeError() {
+  $('#codeError').hidden = true;
+  $('#sellCode').classList.remove('invalid');
+  $$('#sellCode input').forEach((input) => input.removeAttribute('aria-invalid'));
+}
+
+function clearPriceError() {
+  $('#priceError').hidden = true;
+  $('#sellPrice').removeAttribute('aria-invalid');
+}
+
+function showCodeError(message) {
+  $('#codeError').textContent = message;
+  $('#codeError').hidden = false;
+  $('#sellCode').classList.add('invalid');
+  $$('#sellCode input').forEach((input) => input.setAttribute('aria-invalid', 'true'));
+  $('#sellCode input').focus();
+}
+
+function showPriceError(message) {
+  $('#priceError').textContent = message;
+  $('#priceError').hidden = false;
+  $('#sellPrice').setAttribute('aria-invalid', 'true');
+  $('#sellPrice').focus();
+}
+
+function distributeCode(text) {
+  const inputs = $$('#sellCode input');
+  inputs.forEach((input, index) => { input.value = text[index] || ''; });
+  const next = inputs[Math.min(text.length, inputs.length - 1)];
+  if (next) next.focus();
+  clearCodeError();
+}
+
+function onCodeInput(event) {
+  const input = event.target;
+  if (!input.matches('input')) return;
+  const digits = input.value.replace(/\D/g, '');
+  if (digits.length > 1) {
+    distributeCode(digits.slice(0, 6));
+    return;
+  }
+  input.value = digits.slice(-1);
+  if (input.value && input.nextElementSibling) input.nextElementSibling.focus();
+  clearCodeError();
+}
+
+function onCodeKeydown(event) {
+  const input = event.target;
+  if (!input.matches('input')) return;
+  if (event.key === 'Backspace' && !input.value && input.previousElementSibling) {
+    event.preventDefault();
+    input.previousElementSibling.focus();
+    input.previousElementSibling.value = '';
+    clearCodeError();
+  }
+}
+
+function onCodePaste(event) {
+  const text = (event.clipboardData ? event.clipboardData.getData('text') : '').replace(/\D/g, '').slice(0, 6);
+  if (!text) return;
+  event.preventDefault();
+  distributeCode(text);
+}
+
+function onPriceInput(event) {
+  const digits = event.target.value.replace(/\D/g, '').slice(0, 5);
+  const price = Number(digits);
+  event.target.value = digits ? fmt(price) : '';
+  renderPriceChips(price);
+  updateSellSubmit();
+  clearPriceError();
+}
+
+function resetSell() {
+  state.sellClass = 'heonbeop';
+  state.sellDeadline = '20';
+  $$('#sellCode input').forEach((input) => { input.value = ''; });
+  setSellPrice(2500);
+  renderSellClass();
+  renderDeadlineChips();
+  clearCodeError();
+  clearPriceError();
+}
+
+function openSell() {
+  state.sellReturn = state.tab;
+  resetSell();
+  showView('sell');
+  setTimeout(() => { const first = $('#sellCode input'); if (first) first.focus(); }, 40);
+}
+
+function submitSell() {
+  const code = $$('#sellCode input').map((input) => input.value).join('');
+  const price = Number($('#sellPrice').value.replace(/\D/g, ''));
+  if (!/^\d{6}$/.test(code)) {
+    showCodeError('출석코드 6자리를 입력해 주세요.');
+    return;
+  }
+  if (!price || price < 500 || price > 50000) {
+    showPriceError('가격은 500원 이상 50,000원 이하로 입력해 주세요.');
+    return;
+  }
+  const seller = {
+    id: 'u' + Date.now(),
+    price: price,
+    trades: 0,
+    rating: null,
+    response: '방금',
+    left: state.sellDeadline === 'end' ? '수업 종료까지' : state.sellDeadline + '분 남음',
+    instant: true,
+    code: code,
+    mine: true
+  };
+  CLASSES[state.sellClass].sellers.unshift(seller);
+  state.feed.unshift({ classKey: state.sellClass, sellerId: seller.id });
+  state.sellCount += 1;
+  state.search = '';
+  $('#searchInput').value = '';
+  $('#searchWrap').hidden = true;
+  renderHome();
+  renderBoard();
+  showTab('home');
+  toast('출석코드를 등록했어요');
+}
+
+function showView(name) {
+  state.view = name;
+  $$('.view').forEach((view) => { view.hidden = view.dataset.view !== name; });
+  const tabView = ['home', 'board', 'timetable', 'chat'].includes(name);
+  $('#tabbar').hidden = !tabView;
+  if (tabView) {
+    state.tab = name;
+    updateTabbar();
+  }
+  const view = document.querySelector('.view[data-view="' + name + '"]');
+  const scroller = view ? view.querySelector('.view-scroll') : null;
+  if (scroller) scroller.scrollTop = 0;
+}
+
+function updateTabbar() {
+  $$('#tabbar [data-tab]').forEach((tab) => {
+    const active = tab.dataset.tab === state.tab;
+    tab.classList.toggle('active', active);
+    if (active) tab.setAttribute('aria-current', 'page');
+    else tab.removeAttribute('aria-current');
+  });
+}
+
+function showTab(tab) {
+  if (tab === 'home') renderHome();
+  if (tab === 'board') renderBoard();
+  if (tab === 'timetable') renderTimetable();
+  showView(tab);
+}
+
+$('#app').addEventListener('click', (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  const tab = target.closest('[data-tab]');
+  if (tab) {
+    showTab(tab.dataset.tab);
+    return;
+  }
+  const open = target.closest('[data-open-class]');
+  if (open) {
+    openClass(open.dataset.openClass);
+    return;
+  }
+  const sellClass = target.closest('[data-sell-class]');
+  if (sellClass) {
+    state.sellClass = sellClass.dataset.sellClass;
+    renderSellClass();
+    return;
+  }
+  const classTab = target.closest('[data-class-tab]');
+  if (classTab) {
+    state.classTab = classTab.dataset.classTab;
+    renderClassTabs();
+    renderClassPanel();
+    return;
+  }
+  const seller = target.closest('[data-seller]');
+  if (seller) {
+    state.selectedSellerId = seller.dataset.seller;
+    $$('#classPanel [data-seller]').forEach((row) => {
+      const active = row.dataset.seller === state.selectedSellerId;
+      row.classList.toggle('selected', active);
+      row.setAttribute('aria-pressed', String(active));
+    });
+    updateClassCta();
+    return;
+  }
+  const payMethod = target.closest('[data-pay]');
+  if (payMethod) {
+    state.payMethod = payMethod.dataset.pay;
+    renderPayMethods();
+    return;
+  }
+  const deadline = target.closest('[data-deadline]');
+  if (deadline) {
+    state.sellDeadline = deadline.dataset.deadline;
+    renderDeadlineChips();
+    return;
+  }
+  const price = target.closest('[data-price]');
+  if (price) {
+    setSellPrice(Number(price.dataset.price));
+    return;
+  }
+  const sellAction = target.closest('[data-action="sell"]');
+  if (sellAction) {
+    openSell();
+    return;
+  }
+  if (target.closest('[data-close-sheet]')) {
+    closeSheet();
+  }
+});
+
+$('#searchBtn').addEventListener('click', () => {
+  const wrap = $('#searchWrap');
+  wrap.hidden = !wrap.hidden;
+  if (!wrap.hidden) $('#searchInput').focus();
+});
+
+$('#searchClose').addEventListener('click', () => {
+  $('#searchWrap').hidden = true;
+  $('#searchInput').value = '';
+  state.search = '';
+  renderHome();
+});
+
+$('#searchInput').addEventListener('input', (event) => {
+  state.search = event.target.value;
+  renderHome();
+});
+
+$('#bellBtn').addEventListener('click', () => toast('새 알림이 없어요'));
+
+$('#classBack').addEventListener('click', () => showTab(state.returnTab));
+$('#classShare').addEventListener('click', shareLink);
+$('#classMore').addEventListener('click', () => toast('신고·숨기기는 목업이에요'));
+
+$('#buyBtn').addEventListener('click', () => {
+  const mode = $('#buyBtn').dataset.mode;
+  if (mode === 'buy') openSheet();
+  else if (mode === 'view') viewPurchased();
+  else toast('이미 출석 인증이 완료됐어요');
+});
+
+$('#sheetClose').addEventListener('click', () => closeSheet());
+$('#payBtn').addEventListener('click', pay);
+
+$('#successClose').addEventListener('click', () => showTab('home'));
+$('#successMore').addEventListener('click', () => toast('영수증·신고 메뉴는 목업이에요'));
+$('#copyBtn').addEventListener('click', copyCode);
+$('#verifyBtn').addEventListener('click', verifyAttendance);
+$('#receiptBtn').addEventListener('click', () => {
+  const purchase = state.lastPurchase;
+  if (!purchase) {
+    toast('영수증이 없어요');
+    return;
+  }
+  toast('영수증 · ' + CLASSES[purchase.classKey].name + ' ' + CLASSES[purchase.classKey].period + ' · ' + fmt(purchase.price) + '원 · ' + purchase.paidWith);
+});
+
+$('#verifiedClose').addEventListener('click', () => showTab('home'));
+$('#verifiedHome').addEventListener('click', () => showTab('home'));
+$('#verifiedTt').addEventListener('click', () => showTab('timetable'));
+
+$('#sellClose').addEventListener('click', () => showTab(state.sellReturn));
+$('#sellSubmit').addEventListener('click', submitSell);
+$('#sellPrice').addEventListener('input', onPriceInput);
+$('#sellCode').addEventListener('input', onCodeInput);
+$('#sellCode').addEventListener('keydown', onCodeKeydown);
+$('#sellCode').addEventListener('paste', onCodePaste);
+$('#ttEdit').addEventListener('click', () => toast('시간표 편집은 목업이에요'));
+
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  if (!$('#sheetWrap').hidden) {
+    closeSheet();
+    return;
+  }
+  if (!$('#searchWrap').hidden) {
+    $('#searchWrap').hidden = true;
+    $('#searchInput').value = '';
+    state.search = '';
+    renderHome();
+  }
+});
+
+$('#sheet').addEventListener('keydown', (event) => {
+  if (event.key !== 'Tab') return;
+  const focusables = $$('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', $('#sheet')).filter((element) => !element.disabled && element.offsetParent !== null);
+  if (!focusables.length) return;
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+});
+
+renderHome();
+renderBoard();
+renderTimetable();
+showView('home');
+</script>
 </body>
 </html>
