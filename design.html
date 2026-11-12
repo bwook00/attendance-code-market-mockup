@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>출석코드 마켓 · 에브리타임 UI 목업</title>
+<style>
+  :root{
+    --red:#E01F26;
+    --red-dark:#C4161C;
+    --red-soft:#FFF1F1;
+    --red-ink:#A8141A;
+    --ink:#222222;
+    --sub:#737373;
+    --faint:#767676;
+    --line:#EBEBEB;
+    --line-soft:#F3F3F3;
+    --soft:#F7F7F7;
+    --blue:#3B7DED;
+    --radius:8px;
+    --font:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:#F2F2F3;
+    color:#1B1B1D;
+    overflow-x:hidden;
+    font-family:var(--font);
+    -webkit-font-smoothing:antialiased;
+    word-break:keep-all;
+  }
+  .page{max-width:1380px;margin:0 auto;padding:58px 28px 104px}
+  .masthead{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:34px}
+  .kicker{margin:0 0 12px;font-size:10.5px;font-weight:800;letter-spacing:.18em;color:#737373}
+  h1{margin:0 0 12px;font-size:34px;line-height:1.15;letter-spacing:-1.4px;font-weight:800}
+  .lede{margin:0;max-width:590px;font-size:14px;line-height:1.75;color:#5E5E62}
+  .spec{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding-bottom:4px}
+  .swatch{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 11px;background:#fff;border:1px solid #E3E3E5;border-radius:8px;font-size:10.5px;font-weight:600;color:#555;letter-spacing:.02em}
+  .swatch i{width:14px;height:14px;border-radius:4px;display:block;border:1px solid rgba(0,0,0,.06)}
+  .rule{height:1px;background:#DEDEE1;margin:0 0 40px}
+
+  .frames{display:flex;flex-wrap:wrap;justify-content:center;gap:66px 40px}
+  .screen-fig{margin:0;width:408px;flex:none}
+  .screen-fig figcaption{display:flex;gap:12px;align-items:flex-start;margin:0 0 18px;padding:0 2px;min-height:44px}
+  .num{font-size:11px;font-weight:800;color:var(--red-dark);letter-spacing:.08em;line-height:1.5;padding-top:1px}
+  .cap-title{font-size:14px;font-weight:700;letter-spacing:-.2px;line-height:1.4}
+  .cap-desc{font-size:11.5px;color:#6C6C70;line-height:1.5;margin-top:2px}
+
+  .phone{
+    width:408px;height:862px;padding:9px;background:#111113;border-radius:56px;
+    box-shadow:0 26px 60px rgba(0,0,0,.16),0 4px 12px rgba(0,0,0,.08);
+    flex:none;
+  }
+  .screen{
+    position:relative;width:390px;height:844px;overflow:hidden;display:flex;flex-direction:column;
+    background:#fff;border-radius:47px;color:var(--ink);font-size:14px;
+  }
+  .statusbar{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 25px 0 27px;font-size:13px;font-weight:600;letter-spacing:.01em}
+  .sysicons{display:flex;align-items:center;gap:5px;color:#111}
+  .home-bar{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#111;z-index:60;opacity:.9}
+
+  .ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;display:block}
+  .ic.sm{width:16px;height:16px}
+  .ic.xs{width:12px;height:12px}
+  .ic.fill{fill:currentColor;stroke:none}
+  .iconbtn{width:34px;height:34px;display:grid;place-items:center;color:#222;position:relative}
+  .iconbtn .dot{position:absolute;top:7px;right:7px;width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 0 1.5px #fff}
+  .app-head{height:52px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px}
+  .app-head.bordered{border-bottom:1px solid var(--line)}
+  .wordmark{color:var(--red);font-size:21px;font-weight:800;letter-spacing:-1.1px;line-height:1}
+  .head-actions{display:flex;align-items:center;gap:2px}
+
+  .nav{height:48px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+  .nav-title{font-size:16px;font-weight:700;letter-spacing:-.3px}
+  .nav-side{display:flex;align-items:center;gap:0;width:76px}
+  .nav-side.right{justify-content:flex-end}
+
+  .schoolbar{flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 16px 11px;border-bottom:1px solid var(--line);font-size:11.5px;color:#555}
+  .schoolbar .school{display:flex;align-items:center;gap:4px;font-weight:600}
+  .schoolbar .ic{color:#767676}
+  .schoolbar .term{color:var(--sub)}
+
+  .att-card{margin:13px 16px 8px;background:var(--soft);border-radius:12px;padding:13px 15px 12px}
+  .att-top{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;font-weight:700;color:var(--sub)}
+  .att-top .term{font-weight:500;color:#737373}
+  .att-main{display:flex;align-items:baseline;gap:4px;margin-top:4px}
+  .att-main strong{font-size:27px;font-weight:800;letter-spacing:-1.2px;line-height:1.1}
+  .att-main .of{font-size:12.5px;font-weight:600;color:var(--sub)}
+  .att-main .warn{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--red-ink);background:#fff;border-radius:6px;padding:4px 7px}
+  .att-main .warn i{width:4px;height:4px;border-radius:50%;background:var(--red)}
+  .progress{height:4px;border-radius:99px;background:#E4E4E6;overflow:hidden;margin-top:9px}
+  .progress span{display:block;height:100%;background:var(--red);border-radius:99px}
+  .att-foot{display:flex;justify-content:space-between;font-size:10.5px;color:var(--sub);margin-top:7px}
+
+  .sec-head{height:41px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+  .sec-head h2{margin:0;font-size:14.5px;font-weight:800;letter-spacing:-.4px;display:flex;align-items:center;gap:7px}
+  .live{display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:800;letter-spacing:.1em;color:var(--red)}
+  .live i{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 2.2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .more{font-size:10.5px;color:var(--sub);font-weight:500}
+
+  .mkt-row{display:flex;align-items:flex-start;gap:10px;padding:12px 16px 13px;border-top:1px solid var(--line-soft)}
+  .mkt-row.first{border-top:1px solid var(--line)}
+  .mkt-main{flex:1;min-width:0}
+  .mkt-line{display:flex;align-items:center;gap:6px}
+  .pill-class{flex:none;font-size:9.5px;font-weight:800;color:var(--red-ink);background:var(--red-soft);border-radius:4px;padding:2px 5px;letter-spacing:-.1px}
+  .mkt-title{font-size:13px;font-weight:600;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mkt-meta{margin-top:4px;font-size:10.5px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mkt-meta .star{color:#767676;margin:0 1px}
+  .mkt-side{flex:none;text-align:right;padding-top:1px}
+  .mkt-price{font-size:14.5px;font-weight:800;letter-spacing:-.4px;white-space:nowrap}
+  .mkt-price small{font-size:9.5px;font-weight:600;margin-left:1px;letter-spacing:0}
+  .mkt-time{display:block;margin-top:4px;font-size:9.5px;font-weight:700;color:var(--red)}
+  .mkt-time.done{color:#767676;font-weight:600}
+
+  .rank-row{display:flex;align-items:center;gap:11px;padding:9px 16px;border-top:1px solid var(--line-soft)}
+  .rank{width:14px;font-size:11px;font-weight:800;color:var(--red);text-align:center}
+  .rank-name{font-size:12.5px;font-weight:650}
+  .rank-sub{font-size:10.5px;color:var(--sub);margin-top:2px}
+  .rank-price{margin-left:auto;font-size:11.5px;font-weight:700;color:#444}
+  .rank-price span{font-weight:500;color:var(--faint);font-size:10px}
+
+  .safe-strip{display:flex;align-items:center;justify-content:center;gap:5px;margin:10px 16px 0;padding:8px 0;border-top:1px solid var(--line-soft);font-size:10px;color:#777}
+  .safe-strip .ic{color:#767676}
+
+  .fab{position:absolute;right:16px;bottom:93px;width:52px;height:52px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;box-shadow:0 4px 14px rgba(224,31,38,.35);z-index:20}
+  .fab .ic{width:23px;height:23px;stroke-width:1.9}
+
+  .tabbar{flex:none;height:78px;display:flex;padding:7px 4px 19px;border-top:1px solid var(--line);background:#fff;margin-top:auto}
+  .tabitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#737373;font-size:9.5px;font-weight:600}
+  .tabitem .ic{width:23px;height:23px;stroke-width:1.55}
+  .tabitem.active{color:var(--red);font-weight:800}
+
+  /* class detail */
+  .class-hero{padding:2px 16px 13px}
+  .chip-outline{display:inline-flex;align-items:center;height:20px;padding:0 7px;border:1px solid #E3E3E3;border-radius:5px;font-size:9.5px;font-weight:600;color:#666}
+  .class-hero h2{margin:8px 0 5px;font-size:22px;font-weight:800;letter-spacing:-.9px;line-height:1.2}
+  .class-meta{margin:0;font-size:11px;color:var(--sub)}
+  .class-rating{display:flex;align-items:center;gap:5px;margin:7px 0 0;font-size:10.5px;color:#555}
+  .class-rating .ic{color:var(--red)}
+  .class-rating .sep{color:#D2D2D2}
+
+  .today-card{margin:0 16px 12px;background:var(--soft);border-radius:10px;padding:11px 13px 10px}
+  .today-top{display:flex;align-items:center;justify-content:space-between}
+  .live-chip{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:800;color:var(--red-dark)}
+  .live-chip i{width:5px;height:5px;border-radius:50%;background:var(--red)}
+  .timer{font-size:12px;font-weight:800;color:var(--red-dark);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  .timer span{font-size:9px;font-weight:600;color:#7A3B3D;margin-left:2px}
+  .today-row{display:flex;align-items:center;justify-content:space-between;margin-top:7px}
+  .today-row strong{font-size:12.5px;font-weight:700}
+  .today-row .place{font-size:10.5px;color:var(--sub);margin-left:6px;font-weight:400}
+  .state-badge{font-size:9.5px;font-weight:800;color:var(--red-ink);background:#fff;border-radius:5px;padding:3px 6px}
+  .today-note{display:flex;align-items:center;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid #E8E8E8;font-size:10px;color:#666}
+  .today-note b{color:var(--red-dark);font-weight:700}
+
+  .tabs{display:flex;padding:0 16px;border-bottom:1px solid var(--line)}
+  .tab{flex:1;text-align:center;padding:0 0 10px;font-size:11.5px;font-weight:600;color:#737373}
+  .tab.active{color:#111;font-weight:800}
+  .tab .count{color:var(--red);font-weight:800;margin-left:1px}
+
+  .price-card{display:flex;align-items:center;gap:10px;margin:11px 16px 4px;padding:10px 12px;border:1px solid #EFEFEF;border-radius:10px}
+  .price-left{flex:1;min-width:0}
+  .price-label{font-size:9.5px;color:var(--sub);font-weight:600}
+  .price-left strong{display:block;margin-top:1px;font-size:16px;font-weight:800;letter-spacing:-.5px}
+  .price-left strong span{font-size:10px;font-weight:600;margin-left:1px}
+  .price-sub{display:block;margin-top:2px;font-size:9.5px;color:var(--faint)}
+  .spark{flex:none;display:flex;align-items:flex-end;gap:3px;height:30px;width:78px}
+  .spark i{flex:1;background:#EDEDED;border-radius:1px}
+  .spark i.on{background:var(--red)}
+
+  .seller-row{display:flex;align-items:center;gap:9px;padding:10px 16px;border-top:1px solid var(--line-soft)}
+  .seller-av{flex:none;width:32px;height:32px;border-radius:50%;background:#F1F1F2;color:#737373;font-size:10px;font-weight:700;display:grid;place-items:center}
+  .seller-main{flex:1;min-width:0}
+  .seller-title{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mini-badge{flex:none;font-size:8.5px;font-weight:800;color:var(--red-ink);background:var(--red-soft);border-radius:3px;padding:2px 4px}
+  .seller-meta{margin-top:3px;font-size:10px;color:var(--sub)}
+  .seller-side{flex:none;text-align:right}
+  .seller-side strong{font-size:14px;font-weight:800;letter-spacing:-.4px}
+  .seller-side strong small{font-size:9.5px;font-weight:600;margin-left:1px}
+  .seller-side span{display:block;margin-top:3px;font-size:9.5px;font-weight:700;color:var(--red)}
+
+  .cta-dock{flex:none;margin-top:auto;padding:9px 16px 34px;border-top:1px solid var(--line);background:#fff}
+  .escrow-line{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:7px;font-size:9.5px;color:var(--sub)}
+  .escrow-line .ic{color:#767676}
+  .btn-primary{height:47px;border-radius:7px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:800;letter-spacing:-.3px}
+  .btn-primary .ic{width:18px;height:18px;margin-right:5px;stroke-width:2}
+
+  /* payment sheet */
+  .dim-screen{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;filter:blur(.3px)}
+  .scrim{position:absolute;inset:0;background:rgba(17,17,19,.48);z-index:40}
+  .sheet{position:absolute;left:0;right:0;bottom:0;z-index:50;background:#fff;border-radius:22px 22px 0 0;padding:8px 18px 30px;box-shadow:0 -8px 30px rgba(0,0,0,.18)}
+  .grabber{width:36px;height:4px;border-radius:99px;background:#DCDCDE;margin:0 auto 12px}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;height:30px}
+  .sheet-head h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.5px}
+  .sheet-head .iconbtn{width:30px;height:30px}
+  .buy-item{display:flex;align-items:center;gap:10px;margin-top:13px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .buy-thumb{flex:none;width:38px;height:38px;border-radius:9px;background:var(--red-soft);color:var(--red-ink);font-size:14px;font-weight:800;display:grid;place-items:center}
+  .buy-main{flex:1;min-width:0}
+  .buy-main strong{display:block;font-size:13px;font-weight:700;letter-spacing:-.2px}
+  .buy-main span{display:block;margin-top:3px;font-size:10px;color:var(--sub)}
+  .buy-price{flex:none;font-size:17px;font-weight:800;letter-spacing:-.6px}
+  .buy-price small{font-size:10px;font-weight:600;margin-left:1px}
+  .sheet-label{margin:14px 0 8px;font-size:10px;font-weight:700;color:var(--sub)}
+  .pay-row{display:flex;align-items:center;gap:9px;height:50px;border:1px solid #ECECEC;border-radius:8px;padding:0 11px;margin-bottom:7px}
+  .pay-row.selected{border-color:#E9C9CB;background:#FFFCFC}
+  .radio{flex:none;width:16px;height:16px;border-radius:50%;border:1.5px solid #D4D4D6;position:relative}
+  .pay-row.selected .radio{border-color:var(--red)}
+  .pay-row.selected .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--red)}
+  .pay-ic{flex:none;width:30px;height:30px;border-radius:7px;background:#F5F5F6;display:grid;place-items:center;color:#555}
+  .pay-ic .ic{width:17px;height:17px}
+  .pay-main{flex:1;min-width:0}
+  .pay-main strong{display:block;font-size:11.5px;font-weight:700}
+  .pay-main span{display:block;margin-top:2px;font-size:9.5px;color:var(--sub)}
+  .pay-check{color:var(--red);display:grid;place-items:center}
+  .pay-check .ic{width:16px;height:16px;stroke-width:2.4}
+  .bill{margin:12px 0 10px;padding-top:2px;border-top:1px solid var(--line)}
+  .bill-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:10.5px;color:#555}
+  .bill-row b{font-weight:600;color:#333}
+  .bill-row.total{margin-top:5px;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px;color:#111;font-weight:700}
+  .bill-row.total b{font-size:16px;font-weight:800;letter-spacing:-.5px;color:#111}
+  .escrow-box{display:flex;gap:8px;align-items:flex-start;background:var(--soft);border-radius:8px;padding:10px 11px;margin-bottom:12px}
+  .escrow-box .ic{flex:none;width:16px;height:16px;color:#6F6F6F;margin-top:1px}
+  .escrow-box p{margin:0;font-size:9.5px;line-height:1.55;color:#666}
+  .escrow-box p strong{display:block;font-size:10.5px;color:#333;margin-bottom:1px}
+  .terms{margin:9px 0 0;text-align:center;font-size:9px;color:#767676;line-height:1.4}
+
+  /* success */
+  .done-body{flex:1;display:flex;flex-direction:column;padding:16px 20px 0;overflow:hidden}
+  .done-icon{width:62px;height:62px;border-radius:50%;background:var(--red-soft);color:var(--red);display:grid;place-items:center;margin:10px auto 0}
+  .done-icon .ic{width:30px;height:30px;stroke-width:2.4}
+  .done-body h2{margin:13px 0 5px;text-align:center;font-size:20px;font-weight:800;letter-spacing:-.7px}
+  .done-sub{margin:0;text-align:center;font-size:11px;color:var(--sub)}
+  .seller-line{margin-top:7px;text-align:center;font-size:9.5px;color:#737373}
+  .code-card{margin-top:20px;border:1px dashed #DCDCDE;background:#FFF9F9;border-radius:12px;padding:14px 14px 13px}
+  .code-label{display:flex;align-items:center;justify-content:space-between;font-size:9.5px;font-weight:700;color:#8A6A6B}
+  .valid-chip{display:inline-flex;align-items:center;gap:3px;font-size:8.5px;font-weight:700;color:var(--red);background:#fff;border-radius:4px;padding:2px 5px}
+  .digits{display:flex;justify-content:center;gap:6px;margin-top:10px}
+  .digits span{width:41px;height:48px;border-radius:7px;background:#fff;border:1px solid #F0DADB;display:grid;place-items:center;font-size:20px;font-weight:800;letter-spacing:.02em;color:#1B1B1D;font-variant-numeric:tabular-nums}
+  .copy-btn{display:flex;align-items:center;justify-content:center;gap:5px;height:37px;margin-top:11px;border:1px solid #EFD3D5;border-radius:6px;background:#fff;color:var(--red-ink);font-size:11px;font-weight:700}
+  .copy-btn .ic{width:15px;height:15px}
+  .valid-line{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:9px;font-size:9.5px;color:#8A6A6B}
+  .valid-line b{color:var(--red-dark);font-weight:700;font-variant-numeric:tabular-nums}
+  .steps{margin:18px 2px 0;border-top:1px solid var(--line)}
+  .step{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:11px;color:#444}
+  .step b{color:#111;font-weight:700}
+  .step-num{flex:none;width:19px;height:19px;border-radius:50%;background:#F2F2F3;color:#6F6F6F;font-size:9px;font-weight:800;display:grid;place-items:center}
+  .step .ic{margin-left:auto;color:#B5B5B5;width:14px;height:14px}
+  .done-dock{margin-top:auto;padding:10px 20px 34px;border-top:1px solid var(--line)}
+  .link-btn{display:block;text-align:center;margin-top:11px;font-size:11px;font-weight:600;color:var(--sub)}
+  .safe-note{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:10px;font-size:9px;color:#737373}
+
+  /* sell form */
+  .sell-head{height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 10px;border-bottom:1px solid var(--line)}
+  .sell-head .nav-title{position:absolute;left:50%;transform:translateX(-50%)}
+  .sell-head{position:relative}
+  .save{font-size:11px;font-weight:700;color:var(--sub);padding:8px}
+  .form{flex:1;overflow:hidden;padding:13px 16px 0}
+  .field{margin-bottom:13px}
+  .field-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .field-label{font-size:11px;font-weight:800;letter-spacing:-.2px}
+  .field-hint{font-size:9px;color:var(--faint)}
+  .class-select{display:flex;align-items:center;gap:9px;border:1px solid #E6E6E8;border-radius:8px;padding:10px 11px}
+  .class-select .buy-thumb{width:32px;height:32px;font-size:12px;border-radius:8px}
+  .cs-main{flex:1;min-width:0}
+  .cs-main strong{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700}
+  .cs-main span{display:block;margin-top:2px;font-size:9.5px;color:var(--sub)}
+  .cs-main .mini-badge{font-size:8px}
+  .class-select > .ic{color:#767676;width:16px;height:16px}
+  .code-boxes{display:flex;gap:6px}
+  .code-boxes span{flex:1;height:49px;border-radius:7px;border:1px solid #E6E6E8;background:#FAFAFA;display:grid;place-items:center;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:#1B1B1D}
+  .helper{display:flex;align-items:center;gap:4px;margin-top:6px;font-size:9px;color:var(--sub)}
+  .helper .ic{width:12px;height:12px;color:#767676}
+  .helper .right{margin-left:auto;color:#737373}
+  .price-input{display:flex;align-items:center;justify-content:space-between;height:48px;border:1px solid #E6E6E8;border-radius:8px;padding:0 12px;background:#fff}
+  .price-input .won{font-size:13px;font-weight:600;color:#888}
+  .price-input strong{font-size:21px;font-weight:800;letter-spacing:-.7px;font-variant-numeric:tabular-nums}
+  .price-input .unit{font-size:11px;color:#6F6F6F;font-weight:600;margin-left:2px}
+  .chips{display:flex;gap:6px;margin-top:7px}
+  .chip{flex:1;height:31px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid #E9E9EB;background:#fff;font-size:10.5px;font-weight:600;color:#666}
+  .chip.on{border-color:#E7BFC1;background:var(--red-soft);color:var(--red-ink);font-weight:800}
+  .chips.deadline .chip{height:32px}
+  .notice{display:flex;gap:7px;align-items:flex-start;background:var(--soft);border-radius:8px;padding:9px 10px;margin-top:7px}
+  .notice .ic{flex:none;width:14px;height:14px;color:#6F6F6F;margin-top:1px}
+  .notice p{margin:0;font-size:9px;line-height:1.55;color:#6B6B6B}
+  .payout{margin-top:12px;border:1px solid #EFEFEF;border-radius:9px;padding:10px 11px}
+  .payout-row{display:flex;justify-content:space-between;align-items:baseline;font-size:10.5px;color:#666}
+  .payout-row strong{font-size:15px;font-weight:800;color:#111;letter-spacing:-.4px}
+  .payout p{margin:3px 0 0;font-size:9px;color:var(--sub)}
+  .sell-dock{flex:none;padding:9px 16px 32px;border-top:1px solid var(--line);margin-top:auto}
+
+  /* timetable */
+  .tt-head{height:58px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px}
+  .tt-title-wrap{display:flex;align-items:baseline;gap:8px}
+  .tt-title{margin:0;font-size:21px;font-weight:800;letter-spacing:-.8px}
+  .semester{display:inline-flex;align-items:center;gap:2px;font-size:10.5px;color:var(--sub);font-weight:500}
+  .semester .ic{width:13px;height:13px}
+  .tt-wrap{flex:none;padding:0 12px}
+  .tt-days{display:grid;grid-template-columns:32px repeat(5,1fr);align-items:end;height:27px;border-bottom:1px solid var(--line);padding-bottom:6px;font-size:9.5px;color:#737373;text-align:center;font-weight:600}
+  .tt-days .today{color:var(--red);font-weight:800}
+  .tt-body{position:relative;height:510px;margin-left:32px;display:grid;grid-template-columns:repeat(5,1fr);background:repeating-linear-gradient(to bottom,#F6F6F6 0 1px,transparent 1px 16.6667%)}
+  .tt-times{position:absolute;left:-32px;top:0;bottom:0;width:32px;display:flex;flex-direction:column}
+  .tt-time{flex:1;font-size:8px;color:#767676;text-align:right;padding:2px 5px 0 0;font-variant-numeric:tabular-nums;border-top:1px solid #F6F6F6}
+  .tt-time:first-child{border-top:0}
+  .tt-col{position:relative;border-left:1px solid #F3F3F3}
+  .tt-col:first-of-type{border-left:0}
+  .tt-block{position:absolute;left:3px;right:3px;border-radius:6px;padding:5px 5px 4px;overflow:hidden}
+  .tt-block strong{display:block;font-size:9.5px;font-weight:800;letter-spacing:-.2px;line-height:1.25}
+  .tt-block span{display:block;margin-top:2px;font-size:7.5px;font-weight:500;opacity:.8;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .b-red{background:#FFEAEA;color:#A8141A}
+  .b-blue{background:#E9F1FF;color:#2F5C9E}
+  .b-green{background:#E8F6EC;color:#2D6B42}
+  .b-purple{background:#F1EAFF;color:#5C4193}
+  .tt-block.now{background:#FFDCDC;box-shadow:inset 0 0 0 1px #F3BFC2}
+  .nowline{position:absolute;left:0;right:0;top:36%;border-top:1.5px solid var(--red);z-index:5;pointer-events:none}
+  .nowline .dot{position:absolute;left:50%;top:-3.5px;width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px #fff}
+  .tt-summary{flex:none;margin:12px 16px 0;display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #EFEFEF;border-radius:9px}
+  .tt-sum-left{flex:1;min-width:0}
+  .tt-sum-left .eyebrow-red{display:block;font-size:8.5px;font-weight:800;color:var(--red);letter-spacing:.04em}
+  .tt-sum-left strong{display:block;margin-top:2px;font-size:11.5px;font-weight:700}
+  .tt-sum-left span{display:block;margin-top:2px;font-size:9px;color:var(--sub)}
+  .btn-mini{flex:none;height:32px;padding:0 10px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;font-size:10px;font-weight:800;letter-spacing:-.2px}
+
+  /* notes */
+  .notes{max-width:1000px;margin:90px auto 0;padding:0 4px}
+  .notes h2{font-size:15px;font-weight:800;letter-spacing:-.4px;margin:0 0 4px}
+  .notes .sub{font-size:11.5px;color:#6F6F6F;margin:0 0 18px}
+  .note-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 36px;border-top:1px solid #DDDDE0}
+  .note{padding:15px 0 14px;border-bottom:1px solid #E2E2E5}
+  .note strong{display:block;font-size:11.5px;font-weight:800;margin-bottom:4px;letter-spacing:-.2px}
+  .note p{margin:0;font-size:11px;line-height:1.65;color:#666}
+  .note p code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:#A8141A;background:#FFF1F1;padding:1px 4px;border-radius:3px}
+  .disclaimer{margin:26px 0 0;font-size:10.5px;color:#6F6F73;text-align:center}
+
+  @media (max-width:480px){
+    .page{padding:34px 12px 70px}
+    h1{font-size:27px}
+    .lede{font-size:13px}
+    .screen-fig{width:100%}
+    .phone{transform:scale(.86);transform-origin:top center;margin-bottom:-120px}
+    .frames{gap:44px 0}
+    .notes{margin-top:60px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .live i{animation:none}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.6 15.6 4.3 4.3"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6.5 9.5a5.5 5.5 0 0 1 11 0c0 4 1.3 5.2 2 6H4.5c.7-.8 2-2 2-6Z"/><path d="M9.8 19a2.4 2.4 0 0 0 4.4 0"/></symbol>
+    <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="m7 9.5 5 5 5-5"/></symbol>
+    <symbol id="i-chev-left" viewBox="0 0 24 24"><path d="m14.5 6.5-5.5 5.5 5.5 5.5"/></symbol>
+    <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9.5 6.5 5.5 5.5-5.5 5.5"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4"/><path d="m8.5 7.5 3.5-3.5 3.5 3.5"/><path d="M6 12v6.5A1.5 1.5 0 0 0 7.5 20h9a1.5 1.5 0 0 0 1.5-1.5V12"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="1.3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.2 12 4l8 6.2V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1v-9.8Z"/></symbol>
+    <symbol id="i-board" viewBox="0 0 24 24"><path d="M5 6.5h14M5 12h14M5 17.5h9"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3.5v3M16 3.5v3M4 9.5h16"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 12.5c0 4-3.6 7-8 7-1 0-2-.1-2.9-.4L4 21l1.4-3.6C4.5 16 4 14.3 4 12.5c0-4 3.6-7 8-7s8 3 8 7Z"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4.5 19.5 5.6 15 16.8 3.8a1.8 1.8 0 0 1 2.5 0l.9.9a1.8 1.8 0 0 1 0 2.5L9 18.4l-4.5 1.1Z"/><path d="m15.2 5.4 3.4 3.4"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5.5 12.5 4.3 4.3 8.7-9.6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M6 15.5H5A1.5 1.5 0 0 1 3.5 14V5A1.5 1.5 0 0 1 5 3.5h9A1.5 1.5 0 0 1 15.5 5v1"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 19 6v5.3c0 4.3-2.8 7.4-7 9.2-4.2-1.8-7-4.9-7-9.2V6l7-2.5Z"/><path d="m9 12 2 2 4-4.3"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><rect x="4" y="6.5" width="16" height="12.5" rx="2"/><path d="M4 9h16M15.5 13h4"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M3.5 9.5h17M6.5 14.5h4"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5h3l1.4-2h7.2l1.4 2h3A1.5 1.5 0 0 1 21.5 10v8A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18v-8A1.5 1.5 0 0 1 4 8.5Z"/><circle cx="12" cy="13.5" r="3.2"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.8 2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.7-5 2.7.9-5.6-4-3.9 5.6-.8L12 3.8Z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v5M12 16.2v.1"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z"/><path d="M9 8h6M9 11.5h6"/></symbol>
+  </defs>
+</svg>
+
+<div class="page">
+  <header class="masthead">
+    <div>
+      <p class="kicker">EVERYTIME UI PATTERN · 6 SCREENS</p>
+      <h1>출석코드 마켓</h1>
+      <p class="lede">에브리타임의 화면 언어를 그대로 가져와, 수업 중 공개되는 출석코드를 사고파는 흐름을 설계했다. 헌법 · 월/수 3교시 수업을 기준으로 홈 피드부터 결제, 판매 등록까지 이어진다.</p>
+    </div>
+    <div class="spec" aria-label="디자인 토큰">
+      <span class="swatch"><i style="background:#E01F26"></i>#E01F26</span>
+      <span class="swatch"><i style="background:#222222"></i>#222222</span>
+      <span class="swatch"><i style="background:#737373"></i>#737373</span>
+      <span class="swatch"><i style="background:#EBEBEB"></i>#EBEBEB</span>
+      <span class="swatch">Radius 8 · 14px Base</span>
+    </div>
+  </header>
+  <div class="rule"></div>
+
+  <main class="frames">
+
+    <figure class="screen-fig">
+      <figcaption>
+        <span class="num">01</span>
+        <div>
+          <div class="cap-title">홈 · 실시간 코드 피드</div>
+          <div class="cap-desc">내 출석 현황, 마감 임박 코드, 오늘 많이 찾는 강의를 한 화면에.</div>
+        </div>
+      </figcaption>
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="statusbar">
+            <span>12:14</span>
+            <span class="sysicons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+
+          <div class="app-head">
+            <div class="wordmark">에브리타임</div>
+            <div class="head-actions">
+              <span class="iconbtn"><svg class="ic"><use href="#i-search"/></svg></span>
+              <span class="iconbtn"><svg class="ic"><use href="#i-bell"/></svg><span class="dot"></span></span>
+            </div>
+          </div>
+
+          <div class="schoolbar">
+            <span class="school">한국대학교 법학과 · 2학년 <svg class="ic xs"><use href="#i-chev-down"/></svg></span>
+            <span class="term">2026-2학기</span>
+          </div>
+
+          <section class="att-card">
+            <div class="att-top"><span>내 출석</span><span class="term">이번 학기</span></div>
+            <div class="att-main">
+              <strong>14</strong><span class="of">/ 16회</span>
+              <span class="warn"><i></i>결석 2회</span>
+            </div>
+            <div class="progress"><span style="width:87.5%"></span></div>
+            <div class="att-foot"><span>출석률 87.5%</span><span>구매 3 · 판매 1</span></div>
+          </section>
+
+          <div class="sec-head">
+            <h2>지금 뜨는 출석코드 <span class="live"><i></i>LIVE</span></h2>
+            <span class="more">전체보기</span>
+          </div>
+
+          <article class="mkt-row first">
+            <div class="mkt-main">
+              <div class="mkt-line"><span class="pill-class">헌법</span><span class="mkt-title">3교시 출석코드 6자리</span></div>
+              <div class="mkt-meta">익명 · 거래 128회 · ★ 4.9 · 응답 1분</div>
+            </div>
+            <div class="mkt-side"><div class="mkt-price">2,500<small>원</small></div><span class="mkt-time">3분 남음</span></div>
+          </article>
+
+          <article class="mkt-row">
+            <div class="mkt-main">
+              <div class="mkt-line"><span class="pill-class">민법총칙</span><span class="mkt-title">2교시 출석코드 6자리</span></div>
+              <div class="mkt-meta">익명 · 거래 64회 · ★ 4.7 · 응답 3분</div>
+            </div>
+            <div class="mkt-side"><div class="mkt-price">1,800<small>원</small></div><span class="mkt-time">12분 남음</span></div>
+          </article>
+
+          <article class="mkt-row">
+            <div class="mkt-main">
+              <div class="mkt-line"><span class="pill-class">형법각론</span><span class="mkt-title">4교시 출석코드 6자리</span></div>
+              <div class="mkt-meta">익명 · 거래 21회 · ★ 4.5 · 응답 6분</div>
+            </div>
+            <div class="mkt-side"><div class="mkt-price">3,000<small>원</small></div><span class="mkt-time done">마감</span></div>
+          </article>
+
+          <div class="sec-head">
+            <h2>오늘 많이 찾는 강의</h2>
+            <span class="more">시간표</span>
+          </div>
+
+          <div class="rank-row">
+            <span class="rank">1</span>
+            <div><div class="rank-name">헌법</div><div class="rank-sub">김법조 교수 · 월/수 3교시</div></div>
+            <div class="rank-price">시세 2,300원 <span>· 12건</span></div>
+          </div>
+          <div class="rank-row">
+            <span class="rank">2</span>
+            <div><div class="rank-name">민법총칙</div><div class="rank-sub">박민법 교수 · 월/수 2교시</div></div>
+            <div class="rank-price">시세 1,900원 <span>· 8건</span></div>
+          </div>
+
+          <div class="safe-strip"><svg class="ic xs"><use href="#i-shield"/></svg> 코드 확인 후 정산되는 안전 거래</div>
+
+          <div class="tabbar">
+            <span class="tabitem active"><svg class="ic"><use href="#i-home"/></svg>홈</span>
+            <span class="tabitem"><svg class="ic"><use href="#i-board"/></svg>게시판</span>
+            <span class="tabitem"><svg class="ic"><use href="#i-calendar"/></svg>시간표</span>
+            <span class="tabitem"><svg class="ic"><use href="#i-chat"/></svg>쪽지</span>
+          </div>
+          <span class="fab"><svg class="ic"><use href="#i-pencil"/></svg></span>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="screen-fig">
+      <figcaption>
+        <span class="num">02</span>
+        <div>
+          <div class="cap-title">수업 상세 · 헌법</div>
+          <div class="cap-desc">오늘 출석 상태와 시세, 판매자 신뢰도를 한 리스트에 모은다.</div>
+        </div>
+      </figcaption>
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="statusbar">
+            <span>12:14</span>
+            <span class="sysicons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+
+          <div class="nav">
+            <div class="nav-side"><span class="iconbtn"><svg class="ic"><use href="#i-chev-left"/></svg></span></div>
+            <span class="nav-title">헌법</span>
+            <div class="nav-side right">
+              <span class="iconbtn"><svg class="ic"><use href="#i-share"/></svg></span>
+              <span class="iconbtn"><svg class="ic"><use href="#i-more"/></svg></span>
+            </div>
+          </div>
+
+          <div class="class-hero">
+            <span class="chip-outline">전공필수 · 3학점</span>
+            <h2>헌법</h2>
+            <p class="class-meta">김법조 교수 · 월/수 3교시 · 법학관 301</p>
+            <p class="class-rating"><svg class="ic xs fill"><use href="#i-star"/></svg> 4.8 <span>강의평 48</span><span class="sep">·</span><span>수강 312명</span></p>
+          </div>
+
+          <div class="today-card">
+            <div class="today-top">
+              <span class="live-chip"><i></i>출석체크 진행 중</span>
+              <span class="timer">08:42<span>남음</span></span>
+            </div>
+            <div class="today-row">
+              <div><strong>오늘 3교시</strong><span class="place">법학관 301</span></div>
+              <span class="state-badge">미인증</span>
+            </div>
+            <div class="today-note"><svg class="ic xs"><use href="#i-alert"/></svg> 코드를 입력하지 않으면 <b>결석 처리</b>돼요</div>
+          </div>
+
+          <div class="tabs">
+            <span class="tab active">판매중 <span class="count">12</span></span>
+            <span class="tab">거래완료</span>
+            <span class="tab">강의평</span>
+          </div>
+
+          <div class="price-card">
+            <div class="price-left">
+              <span class="price-label">오늘 거래 시세</span>
+              <strong>2,300<span>원</span></strong>
+              <span class="price-sub">최저 1,500 · 최고 3,000</span>
+            </div>
+            <div class="spark">
+              <i style="height:12px"></i><i style="height:19px"></i><i style="height:15px"></i><i style="height:24px"></i><i style="height:21px"></i><i style="height:28px"></i><i class="on" style="height:24px"></i>
+            </div>
+          </div>
+
+          <article class="seller-row">
+            <span class="seller-av">익</span>
+            <div class="seller-main">
+              <div class="seller-title">출석코드 6자리 <span class="mini-badge">즉시공개</span></div>
+              <div class="seller-meta">거래 128회 · ★ 4.9 · 평균 응답 1분</div>
+            </div>
+            <div class="seller-side"><strong>2,500<small>원</small></strong><span>8분 남음</span></div>
+          </article>
+          <article class="seller-row">
+            <span class="seller-av">익</span>
+            <div class="seller-main">
+              <div class="seller-title">출석코드 6자리 <span class="mini-badge">즉시공개</span></div>
+              <div class="seller-meta">거래 42회 · ★ 4.7 · 평균 응답 2분</div>
+            </div>
+            <div class="seller-side"><strong>2,200<small>원</small></strong><span>11분 남음</span></div>
+          </article>
+          <article class="seller-row">
+            <span class="seller-av">익</span>
+            <div class="seller-main">
+              <div class="seller-title">출석코드 6자리</div>
+              <div class="seller-meta">거래 7회 · ★ 4.3 · 평균 응답 9분</div>
+            </div>
+            <div class="seller-side"><strong>1,900<small>원</small></strong><span>16분 남음</span></div>
+          </article>
+          <article class="seller-row">
+            <span class="seller-av">익</span>
+            <div class="seller-main">
+              <div class="seller-title">출석코드 6자리</div>
+              <div class="seller-meta">거래 3회 · ★ 4.0 · 평균 응답 14분</div>
+            </div>
+            <div class="seller-side"><strong>1,700<small>원</small></strong><span>21분 남음</span></div>
+          </article>
+
+          <div class="cta-dock">
+            <div class="escrow-line"><svg class="ic xs"><use href="#i-shield"/></svg> 코드 확인 후 정산 · 허위 코드 전액 환불</div>
+            <div class="btn-primary">2,500원에 코드 구매하기</div>
+          </div>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="screen-fig">
+      <figcaption>
+        <span class="num">03</span>
+        <div>
+          <div class="cap-title">결제 · 바텀시트</div>
+          <div class="cap-desc">화면 전환 없이 결제 수단과 정산 조건을 확인하고 끝낸다.</div>
+        </div>
+      </figcaption>
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="dim-screen">
+            <div class="statusbar">
+              <span>12:14</span>
+              <span class="sysicons">
+                <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
+                <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
+              </span>
+            </div>
+            <div class="nav">
+              <div class="nav-side"><span class="iconbtn"><svg class="ic"><use href="#i-chev-left"/></svg></span></div>
+              <span class="nav-title">헌법</span>
+              <div class="nav-side right"><span class="iconbtn"><svg class="ic"><use href="#i-share"/></svg></span><span class="iconbtn"><svg class="ic"><use href="#i-more"/></svg></span></div>
+            </div>
+            <div class="class-hero">
+              <span class="chip-outline">전공필수 · 3학점</span>
+              <h2>헌법</h2>
+              <p class="class-meta">김법조 교수 · 월/수 3교시 · 법학관 301</p>
+            </div>
+            <div class="today-card">
+              <div class="today-top"><span class="live-chip"><i></i>출석체크 진행 중</span><span class="timer">08:42<span>남음</span></span></div>
+              <div class="today-row"><div><strong>오늘 3교시</strong><span class="place">법학관 301</span></div><span class="state-badge">미인증</span></div>
+            </div>
+            <div class="tabs"><span class="tab active">판매중 <span class="count">12</span></span><span class="tab">거래완료</span><span class="tab">강의평</span></div>
+            <article class="seller-row">
+              <span class="seller-av">익</span>
+              <div class="seller-main"><div class="seller-title">출석코드 6자리 <span class="mini-badge">즉시공개</span></div><div class="seller-meta">거래 128회 · ★ 4.9 · 평균 응답 1분</div></div>
+              <div class="seller-side"><strong>2,500<small>원</small></strong><span>8분 남음</span></div>
+            </article>
+            <div style="height:5px"></div>
+          </div>
+
+          <div class="scrim"></div>
+
+          <div class="sheet">
+            <div class="grabber"></div>
+            <div class="sheet-head">
+              <h2>출석코드 구매</h2>
+              <span class="iconbtn"><svg class="ic"><use href="#i-close"/></svg></span>
+            </div>
+
+            <div class="buy-item">
+              <span class="buy-thumb">헌</span>
+              <div class="buy-main">
+                <strong>헌법 · 3교시</strong>
+                <span>판매자 익명 · 거래 128회 · ★ 4.9</span>
+              </div>
+              <div class="buy-price">2,500<small>원</small></div>
+            </div>
+
+            <div class="sheet-label">결제 수단</div>
+            <div class="pay-row selected">
+              <span class="radio"></span>
+              <span class="pay-ic"><svg class="ic"><use href="#i-wallet"/></svg></span>
+              <div class="pay-main"><strong>에타페이 잔액</strong><span>12,400원</span></div>
+              <span class="pay-check"><svg class="ic"><use href="#i-check"/></svg></span>
+            </div>
+            <div class="pay-row">
+              <span class="radio"></span>
+              <span class="pay-ic"><svg class="ic"><use href="#i-card"/></svg></span>
+              <div class="pay-main"><strong>카드 · 간편결제</strong><span>등록된 카드 1개</span></div>
+            </div>
+
+            <div class="bill">
+              <div class="bill-row"><span>코드 금액</span><b>2,500원</b></div>
+              <div class="bill-row"><span>수수료</span><b>0원</b></div>
+              <div class="bill-row total"><span>총 결제 금액</span><b>2,500원</b></div>
+            </div>
+
+            <div class="escrow-box">
+              <svg class="ic"><use href="#i-shield"/></svg>
+              <p><strong>코드를 확인한 뒤 판매자에게 정산돼요</strong>허위 코드였다면 24시간 안에 신고하면 전액 환불됩니다.</p>
+            </div>
+
+            <div class="btn-primary">2,500원 결제하기</div>
+            <p class="terms">결제 시 출석코드 거래 약관에 동의하게 됩니다.</p>
+          </div>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="screen-fig">
+      <figcaption>
+        <span class="num">04</span>
+        <div>
+          <div class="cap-title">코드 공개 · 구매 완료</div>
+          <div class="cap-desc">결제 직후 6자리 코드와 유효 시간, 인증 동선을 한 번에 보여준다.</div>
+        </div>
+      </figcaption>
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="statusbar">
+            <span>12:14</span>
+            <span class="sysicons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+
+          <div class="nav">
+            <div class="nav-side"><span class="iconbtn"><svg class="ic"><use href="#i-close"/></svg></span></div>
+            <span class="nav-title">구매 완료</span>
+            <div class="nav-side right"><span class="iconbtn"><svg class="ic"><use href="#i-more"/></svg></span></div>
+          </div>
+
+          <div class="done-body">
+            <div class="done-icon"><svg class="ic"><use href="#i-check"/></svg></div>
+            <h2>출석코드를 받았어요</h2>
+            <p class="done-sub">헌법 3교시 · 에타페이 2,500원</p>
+            <div class="seller-line">판매자 익명 · 거래 128회 · ★ 4.9</div>
+
+            <div class="code-card">
+              <div class="code-label"><span>출석코드</span><span class="valid-chip"><svg class="ic" style="width:10px;height:10px"><use href="#i-clock"/></svg> 12:20까지</span></div>
+              <div class="digits"><span>4</span><span>8</span><span>2</span><span>9</span><span>1</span><span>7</span></div>
+              <div class="copy-btn"><svg class="ic"><use href="#i-copy"/></svg> 코드 복사</div>
+              <div class="valid-line"><svg class="ic" style="width:11px;height:11px"><use href="#i-clock"/></svg> 남은 시간 <b>06:12</b></div>
+            </div>
+
+            <div class="steps">
+              <div class="step"><span class="step-num">1</span><span>코드를 복사해요</span><svg class="ic"><use href="#i-check"/></svg></div>
+              <div class="step"><span class="step-num">2</span><span>에브리타임 <b>출석 화면</b>으로 이동</span><svg class="ic"><use href="#i-chev-right"/></svg></div>
+              <div class="step"><span class="step-num">3</span><span>6자리를 입력하면 <b>출석 인정</b></span></div>
+            </div>
+          </div>
+
+          <div class="done-dock">
+            <div class="btn-primary">출석 인증하러 가기</div>
+            <span class="link-btn">영수증 보기</span>
+            <div class="safe-note"><svg class="ic" style="width:11px;height:11px"><use href="#i-shield"/></svg> 허위 코드는 24시간 안에 신고하면 전액 환불</div>
+          </div>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="screen-fig">
+      <figcaption>
+        <span class="num">05</span>
+        <div>
+          <div class="cap-title">판매 등록</div>
+          <div class="cap-desc">코드·가격·마감을 한 폼에. 시세와 평균 판매 시간을 옆에서 안내한다.</div>
+        </div>
+      </figcaption>
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="statusbar">
+            <span>12:14</span>
+            <span class="sysicons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+
+          <div class="sell-head">
+            <span class="iconbtn"><svg class="ic"><use href="#i-close"/></svg></span>
+            <span class="nav-title">출석코드 판매</span>
+            <span class="save">임시저장</span>
+          </div>
+
+          <div class="form">
+            <div class="field">
+              <div class="field-head"><span class="field-label">수업</span><span class="field-hint">오늘 수업</span></div>
+              <div class="class-select">
+                <span class="buy-thumb">헌</span>
+                <div class="cs-main">
+                  <strong>헌법 <span class="mini-badge">수업 중</span></strong>
+                  <span>월/수 3교시 · 법학관 301 · 김법조</span>
+                </div>
+                <svg class="ic"><use href="#i-chev-down"/></svg>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-head"><span class="field-label">출석코드</span><span class="field-hint">숫자 6자리</span></div>
+              <div class="code-boxes"><span>4</span><span>8</span><span>2</span><span>9</span><span>1</span><span>7</span></div>
+              <div class="helper"><svg class="ic"><use href="#i-camera"/></svg> 칠판 코드를 촬영해 인식<span class="right">판매 전까지 비공개</span></div>
+            </div>
+
+            <div class="field">
+              <div class="field-head"><span class="field-label">판매 가격</span><span class="field-hint">오늘 시세 2,300원</span></div>
+              <div class="price-input"><span class="won">₩</span><strong>2,500<span class="unit">원</span></strong></div>
+              <div class="chips">
+                <span class="chip">1,500</span>
+                <span class="chip">2,000</span>
+                <span class="chip on">2,500</span>
+                <span class="chip">3,000</span>
+              </div>
+              <div class="helper"><svg class="ic"><use href="#i-clock"/></svg> 이 가격이면 평균 4분 안에 판매돼요</div>
+            </div>
+
+            <div class="field">
+              <div class="field-head"><span class="field-label">마감 시간</span><span class="field-hint">12:34 자동 마감</span></div>
+              <div class="chips deadline">
+                <span class="chip">10분</span>
+                <span class="chip on">20분</span>
+                <span class="chip">수업 종료까지</span>
+              </div>
+              <div class="notice">
+                <svg class="ic"><use href="#i-alert"/></svg>
+                <p>입력한 코드가 틀리면 판매가 취소되고 페널티가 붙어요. 구매자에게는 결제 후에만 코드가 공개됩니다.</p>
+              </div>
+            </div>
+
+            <div class="payout">
+              <div class="payout-row"><span>정산 예정 금액</span><strong>2,500원</strong></div>
+              <p>구매자가 코드를 확인하면 에타페이로 들어와요.</p>
+            </div>
+          </div>
+
+          <div class="sell-dock">
+            <div class="btn-primary">2,500원에 등록하기</div>
+          </div>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="screen-fig">
+      <figcaption>
+        <span class="num">06</span>
+        <div>
+          <div class="cap-title">시간표 · 구매 진입점</div>
+          <div class="cap-desc">헌법 블록에 오늘 코드 상태를 얹어, 시간표에서 바로 구매로 넘어간다.</div>
+        </div>
+      </figcaption>
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="statusbar">
+            <span>12:14</span>
+            <span class="sysicons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 10.8a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8Zm0-4.6c1.2 0 2.3.5 3.1 1.3l1.1-1.1A6.5 6.5 0 0 0 8 4.4a6.5 6.5 0 0 0-4.2 2l1.1 1.1A4.4 4.4 0 0 1 8 6.2Zm0-3.6c2.1 0 4 .8 5.4 2.2l1.1-1.1A9.2 9.2 0 0 0 8 .8 9.2 9.2 0 0 0 1.5 3.7l1.1 1.1A7.6 7.6 0 0 1 8 2.6Z"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="1.8" fill="currentColor"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" fill-opacity=".4"/></svg>
+            </span>
+          </div>
+
+          <div class="tt-head">
+            <div class="tt-title-wrap">
+              <h2 class="tt-title">시간표</h2>
+              <span class="semester">2026-2학기 <svg class="ic"><use href="#i-chev-down"/></svg></span>
+            </div>
+            <span class="iconbtn"><svg class="ic"><use href="#i-pencil"/></svg></span>
+          </div>
+
+          <div class="tt-wrap">
+            <div class="tt-days">
+              <span></span><span>월</span><span>화</span><span class="today">수</span><span>목</span><span>금</span>
+            </div>
+            <div class="tt-body">
+              <div class="tt-times">
+                <span class="tt-time">09:00</span><span class="tt-time">10:30</span><span class="tt-time">12:00</span><span class="tt-time">13:30</span><span class="tt-time">15:00</span><span class="tt-time">16:30</span>
+              </div>
+
+              <div class="tt-col">
+                <div class="tt-block b-blue" style="top:16.67%;height:16.5%"><strong>민법총칙</strong><span>법학관 202</span></div>
+                <div class="tt-block b-red" style="top:33.33%;height:16.5%"><strong>헌법</strong><span>법학관 301</span></div>
+              </div>
+              <div class="tt-col">
+                <div class="tt-block b-green" style="top:16.67%;height:16.5%"><strong>형법각론</strong><span>법학관 105</span></div>
+              </div>
+              <div class="tt-col">
+                <div class="tt-block b-red now" style="top:33.33%;height:16.5%"><strong>헌법</strong><span>코드 2,500원</span></div>
+              </div>
+              <div class="tt-col">
+                <div class="tt-block b-purple" style="top:66.67%;height:16.5%"><strong>커뮤니케이션</strong><span>교양관 401</span></div>
+              </div>
+              <div class="tt-col">
+                <div class="tt-block b-blue" style="top:16.67%;height:16.5%"><strong>민법총칙</strong><span>법학관 202</span></div>
+              </div>
+
+              <div class="nowline"><span class="dot"></span></div>
+            </div>
+          </div>
+
+          <div class="tt-summary">
+            <div class="tt-sum-left">
+              <span class="eyebrow-red">오늘 출석 1 / 2</span>
+              <strong>헌법 3교시 · 코드 미인증</strong>
+              <span>마감까지 8분 · 판매 12건</span>
+            </div>
+            <span class="btn-mini">2,500원 구매</span>
+          </div>
+
+          <div class="tabbar">
+            <span class="tabitem"><svg class="ic"><use href="#i-home"/></svg>홈</span>
+            <span class="tabitem"><svg class="ic"><use href="#i-board"/></svg>게시판</span>
+            <span class="tabitem active"><svg class="ic"><use href="#i-calendar"/></svg>시간표</span>
+            <span class="tabitem"><svg class="ic"><use href="#i-chat"/></svg>쪽지</span>
+          </div>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+    </figure>
+
+  </main>
+
+  <section class="notes">
+    <h2>디자인 패턴 메모</h2>
+    <p class="sub">에브리타임에서 가져온 것과, 출석코드 거래에 맞게 바꾼 것.</p>
+    <div class="note-grid">
+      <div class="note">
+        <strong>레드 한 색만 포인트로</strong>
+        <p>로고·가격·마감·주 액션에만 <code>#E01F26</code>. 본문은 <code>#222</code>, 메타는 <code>#737373</code>으로 두고 배경은 순백.</p>
+      </div>
+      <div class="note">
+        <strong>카드보다 선</strong>
+        <p>1px <code>#EBEBEB</code> 구분선으로 리스트를 나누고, 13px 제목 + 10.5px 메타의 밀도를 유지한다. 그림자는 플로팅 버튼과 시트에만.</p>
+      </div>
+      <div class="note">
+        <strong>익명 대신 거래 이력</strong>
+        <p>닉네임이 없는 대신 거래 횟수·별점·평균 응답 시간으로 판매자 신뢰를 만든다. 에브리타임의 익명성과 마켓의 신뢰를 교차시킨 지점.</p>
+      </div>
+      <div class="note">
+        <strong>결제는 바텀시트로</strong>
+        <p>출석 마감이 몇 분 단위라 화면 전환을 줄였다. 수업 상세 위로 시트를 올려 맥락을 유지하고, 정산 조건은 결제 버튼 바로 위에 둔다.</p>
+      </div>
+      <div class="note">
+        <strong>시간표가 곧 상점</strong>
+        <p>시간표 블록에 오늘 코드 상태와 가격을 얹었다. 에브리타임 사용자가 가장 자주 여는 화면을 구매 진입점으로 재사용.</p>
+      </div>
+      <div class="note">
+        <strong>마감 압박의 시각화</strong>
+        <p>남은 시간은 레드 + tabular number로 고정폭. 3분·8분 같은 짧은 단위를 리스트 우측에 반복 배치해 판단 속도를 높인다.</p>
+      </div>
+    </div>
+    <p class="disclaimer">실제 서비스가 아닌 UI/UX 디자인 목업입니다. 표시된 수업·판매자·금액은 모두 예시입니다.</p>
+  </section>
+</div>
+</body>
+</html>
